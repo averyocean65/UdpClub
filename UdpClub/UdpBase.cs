@@ -43,9 +43,16 @@ namespace UdpClub {
 		/// </summary>
 		/// <returns>A boolean stating whether the connection attempt was successful or not.</returns>
 		public bool Connect() {
-			if (InnerClient.Client.Connected || IsServer) {
+			if (InnerClient.Client.Connected) {
 				// respond with true, because connection isn't necessary.
 				return true;
+			}
+
+			if (IsServer) {
+				Console.WriteLine("server!");
+				while (true) {
+					// just keep alive for now so we can test connectivity with clients
+				}
 			}
 
 			try {
