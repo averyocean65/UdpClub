@@ -416,3 +416,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# JetBrains editors based on IntelliJ
+.idea/
