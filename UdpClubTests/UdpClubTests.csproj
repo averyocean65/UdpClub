@@ -5,11 +5,12 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{0D4CAF70-C11D-436C-B1BF-D443FB3BD1DB}</ProjectGuid>
+        <ProjectGuid>{A60E444E-5EB9-48AE-AD46-F45FE7E586FA}</ProjectGuid>
+        <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>UdpClub</RootNamespace>
-        <AssemblyName>UdpClub</AssemblyName>
+        <RootNamespace>UdpClubTests</RootNamespace>
+        <AssemblyName>UdpClubTests</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -37,14 +38,19 @@
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
+        <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
+            <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Package.cs" />
-        <Compile Include="UdpBase.cs" />
+        <Compile Include="ArrayTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="UdpClientApp.cs" />
-        <Compile Include="UdpServerApp.cs" />
-        <Compile Include="Utils\ArrayUtils.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\UdpClub\UdpClub.csproj">
+        <Project>{0d4caf70-c11d-436c-b1bf-d443fb3bd1db}</Project>
+        <Name>UdpClub</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
