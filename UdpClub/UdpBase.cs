@@ -97,7 +97,12 @@ namespace UdpClub {
 			Console.WriteLine($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
 			
 			// Send package back
-			InnerClient.Send(new byte[] { 0x00, 0xAA, 0xBB, 0xFF }, 4, endPoint);
+			if (IsServer) {
+				InnerClient.Send(new byte[] { 0x00, 0xAA, 0xBB, 0xFF }, 4, endPoint);
+			}
+			else {
+				InnerClient.Send(new byte[] { 0x00, 0xAA, 0xBB, 0xFF }, 4);
+			}
 			Console.WriteLine("Sent package back!");
 		}
 
