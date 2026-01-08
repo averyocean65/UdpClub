@@ -17,17 +17,19 @@ namespace TestClient {
 			_client = new UdpClientApp("127.0.0.1", 8201);
 			_client.OnConnected += ConnectedCallback;
 			_client.Connect();
-		}
-
-		private static void PackageParsedCallback(BasePackage obj) {
-			if (obj is MessagePacket message) {
-				Console.WriteLine($"Message packet: {message.Username}: {message.Message}");
-			}
+			
+			while(true) { }
 		}
 
 		private static void ConnectedCallback() {
 			MessagePacket messagePacket = new MessagePacket("test", "hello there! :3");
 			PackageHandler.SendPackage(_client, null, messagePacket);
+		}
+		
+		private static void PackageParsedCallback(BasePackage obj) {
+			if (obj is MessagePacket message) {
+				Console.WriteLine($"Message packet: {message.Username}: {message.Message}");
+			}
 		}
 	}
 }
