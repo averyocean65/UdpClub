@@ -419,3 +419,6 @@ FodyWeavers.xsd
 
 # JetBrains editors based on IntelliJ
 .idea/
+
+# Exceptions for UdpClub
+!/UdpClub/Packages/*
