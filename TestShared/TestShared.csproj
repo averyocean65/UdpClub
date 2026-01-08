@@ -5,11 +5,11 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{0D4CAF70-C11D-436C-B1BF-D443FB3BD1DB}</ProjectGuid>
+        <ProjectGuid>{062542EB-2391-4B50-A80E-4A7C514AAE54}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>UdpClub</RootNamespace>
-        <AssemblyName>UdpClub</AssemblyName>
+        <RootNamespace>TestShared</RootNamespace>
+        <AssemblyName>TestShared</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -39,14 +39,8 @@
         <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Packages\BasePackage.cs" />
-        <Compile Include="Packages\PackageHandler.cs" />
-        <Compile Include="Packages\PackageMap.cs" />
-        <Compile Include="UdpBase.cs" />
+        <Compile Include="PackageManager.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="UdpClientApp.cs" />
-        <Compile Include="UdpServerApp.cs" />
-        <Compile Include="Utils\ArrayUtils.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

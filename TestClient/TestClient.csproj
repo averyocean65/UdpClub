@@ -44,6 +44,10 @@
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\TestShared\TestShared.csproj">
+        <Project>{062542eb-2391-4b50-a80e-4a7c514aae54}</Project>
+        <Name>TestShared</Name>
+      </ProjectReference>
       <ProjectReference Include="..\UdpClub\UdpClub.csproj">
         <Project>{0d4caf70-c11d-436c-b1bf-d443fb3bd1db}</Project>
         <Name>UdpClub</Name>
