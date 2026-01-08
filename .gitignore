@@ -212,6 +212,8 @@ PublishScripts/
 *.nupkg
 # NuGet Symbol Packages
 *.snupkg
+# nuget packages
+Packages/
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
