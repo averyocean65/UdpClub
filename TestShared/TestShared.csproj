@@ -40,7 +40,14 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="PackageManager.cs" />
+        <Compile Include="Packets\MessagePacket.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\UdpClub\UdpClub.csproj">
+        <Project>{0d4caf70-c11d-436c-b1bf-d443fb3bd1db}</Project>
+        <Name>UdpClub</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

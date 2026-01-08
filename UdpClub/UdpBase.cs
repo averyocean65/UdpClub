@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using UdpClub.Packages;
 
 namespace UdpClub {
 	public abstract class UdpBase {
@@ -25,6 +26,9 @@ namespace UdpClub {
 		/// Decides whether to treat certain operations like a server or like a client.
 		/// </summary>
 		public bool IsServer { get; private set; }
+
+		public Action OnConnected;
+		public Action OnDisconnected;
 		
 		/// <summary>
 		/// Creates a new instance of class UdpBase.
@@ -68,7 +72,6 @@ namespace UdpClub {
 
 			try {
 				InnerClient.Connect(Hostname, Port);
-				InnerClient.Send(new byte[] { 0xFE, 0xDC, 0xBA, 0xFF }, 4);
 				Task.Run(NetworkLoop);
 			}
 			catch(Exception ex) {
@@ -76,7 +79,16 @@ namespace UdpClub {
 				return false;
 			}
 			
+			OnConnected.Invoke();
 			return true;
+		}
+		
+		public virtual void Disconnect() {
+			if (!InnerClient.Client.Connected) {
+				return;
+			}
+			InnerClient.Close();
+			OnDisconnected.Invoke();
 		}
 
 		/// <summary>
@@ -96,21 +108,16 @@ namespace UdpClub {
 			byte[] received = InnerClient.Receive(ref endPoint);
 			Console.WriteLine($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
 			
-			// Send package back
-			if (IsServer) {
-				InnerClient.Send(new byte[] { 0x00, 0xAA, 0xBB, 0xFF }, 4, endPoint);
-			}
-			else {
-				InnerClient.Send(new byte[] { 0x00, 0xAA, 0xBB, 0xFF }, 4);
-			}
-			Console.WriteLine("Sent package back!");
+			PackageHandler.OnMessageReceived.Invoke(received);
 		}
 
-		public virtual void Disconnect() {
-			if (!InnerClient.Client.Connected) {
+		public virtual void Send(byte[] data, IPEndPoint ep) {
+			if (!IsServer) {
+				InnerClient.Send(data, data.Length);
 				return;
 			}
-			InnerClient.Close();
+
+			InnerClient.Send(data, data.Length, ep);
 		}
 	}
 }
