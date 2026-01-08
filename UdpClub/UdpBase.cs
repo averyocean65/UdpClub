@@ -115,7 +115,7 @@ namespace UdpClub {
 			byte[] received = InnerClient.Receive(ref endPoint);
 			Console.WriteLine($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
 			
-			PackageHandler.OnMessageReceived.Invoke(received);
+			PackageHandler.OnMessageReceived.Invoke(received, endPoint);
 		}
 
 		public virtual void Send(byte[] data, IPEndPoint ep) {

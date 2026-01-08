@@ -8,11 +8,14 @@ using UdpClub.Packages;
 namespace TestClient {
 	internal class Program {
 		private static UdpClientApp _client;
+		private static string _requestedUsername = string.Empty;
 		
 		public static void Main(string[] args) {
 			PackageManager.RegisterPackets();
-			
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
+
+			Console.WriteLine("Input username:");
+			_requestedUsername = Console.ReadLine();
 			
 			_client = new UdpClientApp("127.0.0.1", 8201);
 			_client.OnConnected += ConnectedCallback;
@@ -22,13 +25,23 @@ namespace TestClient {
 		}
 
 		private static void ConnectedCallback() {
-			MessagePacket messagePacket = new MessagePacket("test", "hello there! :3");
-			PackageHandler.SendPackage(_client, null, messagePacket);
+			AuthPacket authPacket = new AuthPacket(_requestedUsername);
+			PackageHandler.SendPackage(_client, null, authPacket);
 		}
 		
 		private static void PackageParsedCallback(BasePackage obj) {
 			if (obj is MessagePacket message) {
-				Console.WriteLine($"Message packet: {message.Username}: {message.Message}");
+				Console.WriteLine($"Message packet from {message.Username}: {message.Message}");
+			}
+			
+			if (obj is AuthReturnPacket success) {
+				if (success.Successful) {
+					Console.WriteLine("authenticated with the server");
+					return;
+				}
+				
+				Console.WriteLine("connection denied!");
+				Environment.Exit(1);
 			}
 		}
 	}

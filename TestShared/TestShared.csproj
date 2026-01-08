@@ -40,6 +40,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="PackageManager.cs" />
+        <Compile Include="Packets\AuthPacket.cs" />
+        <Compile Include="Packets\AuthReturnPacket.cs" />
         <Compile Include="Packets\MessagePacket.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
