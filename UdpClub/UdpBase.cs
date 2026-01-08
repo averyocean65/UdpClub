@@ -84,11 +84,18 @@ namespace UdpClub {
 		}
 		
 		public virtual void Disconnect() {
+			if (InnerClient == null) {
+				return;
+			}
+			
 			if (!InnerClient.Client.Connected) {
 				return;
 			}
 			InnerClient.Close();
-			OnDisconnected.Invoke();
+
+			if (OnDisconnected != null) {
+				OnDisconnected.Invoke();
+			}
 		}
 
 		/// <summary>
