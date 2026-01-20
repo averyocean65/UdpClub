@@ -4,8 +4,10 @@ using System.Linq;
 
 namespace UdpClub.Packages {
 	public static class PackageMap {
-		public static Dictionary<byte, Type> Packages = new Dictionary<byte, Type>();
-		private static byte _latestIndex;
+		public static Dictionary<byte, Type> Packages = new Dictionary<byte, Type>() {
+			{ 0x00, typeof(RpcPackage) }
+		};
+		private static byte _latestIndex = 0x01;
 		
 		public static void RegisterPacket(Type packet, bool throwExceptionIfPacketIsRegistered = false) {
 			if (!packet.IsSubclassOf(typeof(BasePackage))) {

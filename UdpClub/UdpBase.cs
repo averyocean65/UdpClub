@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using UdpClub.Packages;
+using UdpClub.RPCs;
 
 namespace UdpClub {
 	public abstract class UdpBase {
+		/// <summary>
+		/// The assembly of the calling program, required for RPCs.
+		/// </summary>
+		public static Assembly ProgramAssembly;
+		
 		/// <summary>
 		/// The bare knuckles UDP client.
 		/// </summary>
@@ -33,10 +41,12 @@ namespace UdpClub {
 		/// <summary>
 		/// Creates a new instance of class UdpBase.
 		/// </summary>
+		/// <param name="programAssembly">The assembly of the program initializing a UdpBase instance, see <see cref="ProgramAssembly"/></param>
 		/// <param name="hostname">The address for the connection. Assigned to <see cref="Hostname"/></param>
 		/// <param name="port">The port that the client will be listening on / sending to. Assigned to <see cref="Port"/></param>
 		/// <param name="isServer">Whether to internally treat the instance as a server or client. Assigned to <see cref="IsServer"/></param>
-		protected UdpBase(string hostname, int port, bool isServer) {
+		protected UdpBase(Assembly programAssembly, string hostname, int port, bool isServer) {
+			ProgramAssembly = programAssembly;
 			Hostname = hostname;
 			Port = port;
 			IsServer = isServer;
@@ -53,6 +63,21 @@ namespace UdpClub {
 		~UdpBase() {
 			Disconnect();
 			InnerClient.Dispose();
+		}
+
+		protected void InitializeRpc() {
+			foreach (Type t in ProgramAssembly.GetTypes()) {
+				foreach (MethodInfo m in t.GetMethods(BindingFlags.Static)) {
+					if (!m.IsPublic) {
+						continue;
+					}
+
+					var rpc = m.GetCustomAttributes<RPCAttribute>().FirstOrDefault();
+					if (rpc != default) {
+						RPCManager.Subscribe(rpc);
+					}
+				}
+			}
 		}
 
 		/// <summary>

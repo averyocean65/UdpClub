@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using TestShared;
 using TestShared.Packets;
 using UdpClub;
 using UdpClub.Packages;
+using UdpClub.RPCs;
 
 namespace TestClient {
 	internal class Program {
@@ -14,6 +16,10 @@ namespace TestClient {
 			PackageManager.RegisterPackets();
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
 
+			RPCManager.ExecuteRpc += attribute =>
+				RPCManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute);
+			RPCManager.ExecuteRpc += (a) => { Console.WriteLine("Invoking RPC!"); };
+			
 			Console.WriteLine("Input username:");
 			_requestedUsername = Console.ReadLine();
 			
@@ -22,6 +28,11 @@ namespace TestClient {
 			_client.Connect();
 			
 			while(true) { }
+		}
+
+		[RPC(nameof(MyRPC))]
+		public static void MyRPC() {
+			Console.WriteLine("RPC called!");
 		}
 
 		private static void ConnectedCallback() {

@@ -1,7 +1,8 @@
 ﻿using System.Net;
+using System.Reflection;
 
 namespace UdpClub {
 	public class UdpServerApp : UdpBase {
-		public UdpServerApp(string hostname, int port) : base(hostname, port, true) { }
+		public UdpServerApp(string hostname, int port) : base(Assembly.GetCallingAssembly(), hostname, port, true) { }
 	}
 }

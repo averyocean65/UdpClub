@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using UdpClub.RPCs;
 
 namespace UdpClub.Packages {
 	public static class PackageHandler {
@@ -31,6 +32,14 @@ namespace UdpClub.Packages {
 			}
 
 			BasePackage package = (BasePackage)constructor.Invoke(new object[] { data, ep });
+			
+			// special case for RpcPackages
+            if (id == PackageMap.GetPackageId(typeof(RpcPackage))) {
+	            RpcPackage rpc = package as RpcPackage;
+	            Console.WriteLine($"Executing RPC Package: {rpc.rpcId}");
+	            RPCManager.CallRpc(rpc.rpcId);
+            }
+			
 			OnPackageParsed.Invoke(package);
 		}
 

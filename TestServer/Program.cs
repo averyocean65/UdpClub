@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Threading;
+using System.Reflection;
 using TestShared;
 using TestShared.Packets;
 using UdpClub;
 using UdpClub.Packages;
+using UdpClub.RPCs;
 
 namespace TestServer {
 	internal class Program {
@@ -17,6 +19,9 @@ namespace TestServer {
 			
 			PackageHandler.OnMessageReceived += MessageReceivedCallback;
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
+			
+			RPCManager.ExecuteRpc += attribute =>
+				RPCManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute); 
 			
 			_client = new UdpServerApp("127.0.0.1", 8201);
 			_client.Connect();
@@ -48,6 +53,9 @@ namespace TestServer {
 				
 				AuthReturnPacket accept = new AuthReturnPacket(true);
 				PackageHandler.SendPackage(_client, auth.Sender, accept);
+
+				RpcPackage testRpc = new RpcPackage("MyRPC");
+				PackageHandler.SendPackageToAll(_client, _connectedUsers.Values.ToArray(), testRpc);
 			}
 		}
 	}

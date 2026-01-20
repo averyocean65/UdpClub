@@ -42,12 +42,16 @@
         <Compile Include="Packages\BasePackage.cs" />
         <Compile Include="Packages\PackageHandler.cs" />
         <Compile Include="Packages\PackageMap.cs" />
+        <Compile Include="Packages\RpcPackage.cs" />
+        <Compile Include="RPCs\RPCAttribute.cs" />
+        <Compile Include="RPCs\RPCManager.cs" />
         <Compile Include="UdpBase.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="UdpClientApp.cs" />
         <Compile Include="UdpServerApp.cs" />
         <Compile Include="Utils\ArrayUtils.cs" />
         <Compile Include="Utils\ByteUtils.cs" />
+        <Compile Include="Utils\Singleton.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
