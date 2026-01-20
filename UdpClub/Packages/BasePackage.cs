@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using UdpClub.Utils;
 
 namespace UdpClub.Packages {
@@ -29,6 +27,7 @@ namespace UdpClub.Packages {
 				.FirstOrDefault(x => x.Value == type)
 				.Key;
 		}
+		
 		protected bool IsIdValid(Type type) {
 			return GetRequiredId(type) == Id;
 		}
