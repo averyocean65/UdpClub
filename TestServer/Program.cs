@@ -54,7 +54,7 @@ namespace TestServer {
 				AuthReturnPacket accept = new AuthReturnPacket(true);
 				PackageHandler.SendPackage(_client, auth.Sender, accept);
 
-				RpcPackage testRpc = new RpcPackage("MyRPC");
+				RpcPackage testRpc = new RpcPackage("HelloWorldRpc");
 				PackageHandler.SendPackageToAll(_client, _connectedUsers.Values.ToArray(), testRpc);
 			}
 		}

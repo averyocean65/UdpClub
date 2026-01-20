@@ -16,11 +16,13 @@ namespace UdpClub.RPCs
         }
 
         public static void Subscribe(RPCAttribute rpc) {
-            Console.WriteLine($"Subscribing RPC: {rpc.Id}");
             if (IsSubscribed(rpc.Id)) {
                 return;
             }
             
+#if _DEBUG
+            Console.WriteLine($"Subscribing RPC: {rpc.Id}");
+#endif
             RpcProcedures.Add(rpc.Id, rpc);
         }
 
@@ -31,32 +33,30 @@ namespace UdpClub.RPCs
         }
         
         public static void CallRpc(string id) {
-            Console.WriteLine($"Executing RPC: {id}");
-            Console.WriteLine($"Registered RPCs: {RpcProcedures.Count}");
             RPCAttribute rpc = GetRpc(id);
             
-            Console.WriteLine($"RPC is default: {rpc == default}");
-            if (rpc == default) {
+#if _DEBUG
+            Console.WriteLine($"Executing RPC: {id}");
+            Console.WriteLine($"Registered RPCs: {RpcProcedures.Count}");
+            Console.WriteLine($"RPC is null? {rpc == null}");
+#endif
+            
+            if (rpc == null) {
                 return;
             }
             ExecuteRpc.Invoke(rpc);
         }
         
         public static void InvokeRpcInAssembly(Assembly asm, string id) {
+#if _DEBUG
             Console.WriteLine($"Assembly: {asm.FullName}");
+#endif
             
-            // from: https://stackoverflow.com/questions/65479133/c-sharp-attributes-and-methods
-            IEnumerable<Type> typesWithMethod = from t in asm.GetTypes()
-                where t.GetCustomAttributes<RPCAttribute>().Any(x => x.Id == id)
-                select t;
-
-            foreach (Type t in typesWithMethod) {
-                MethodInfo[] methods = t.GetMethods();
+            foreach (Type t in asm.GetTypes()) {
+                IEnumerable<MethodInfo> methods = t.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .Where(x => x.GetCustomAttributes<RPCAttribute>().Any());
+                
                 foreach (MethodInfo m in methods) {
-                    if (!m.GetCustomAttributes().Any(x => x is RPCAttribute)) {
-                        continue;
-                    }
-                    
                     if (!m.IsStatic) {
                         continue;
                     }

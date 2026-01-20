@@ -36,7 +36,11 @@ namespace UdpClub.Packages {
 			// special case for RpcPackages
             if (id == PackageMap.GetPackageId(typeof(RpcPackage))) {
 	            RpcPackage rpc = package as RpcPackage;
+	            
+#if _DEBUG
 	            Console.WriteLine($"Executing RPC Package: {rpc.rpcId}");
+#endif
+	            
 	            RPCManager.CallRpc(rpc.rpcId);
             }
 			

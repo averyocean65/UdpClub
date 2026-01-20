@@ -22,7 +22,7 @@ namespace UdpClub.Packages {
         
         public override byte[] ToBytes() {
             byte[] rpcIdBytes = Encoding.Default.GetBytes(rpcId);
-            List<byte> data = new List<byte>() { Id };
+            List<byte> data = new List<byte> { Id };
             data.AddRange(rpcIdBytes);
             return data.ToArray();
         }

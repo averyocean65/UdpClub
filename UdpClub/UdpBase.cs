@@ -51,6 +51,8 @@ namespace UdpClub {
 			Port = port;
 			IsServer = isServer;
 
+			Console.WriteLine("Initializing RPCs...");
+			InitializeRpc();
 			if (IsServer) {
 				// server-specific constructor
 				InnerClient = new UdpClient(Port);
@@ -67,13 +69,16 @@ namespace UdpClub {
 
 		protected void InitializeRpc() {
 			foreach (Type t in ProgramAssembly.GetTypes()) {
-				foreach (MethodInfo m in t.GetMethods(BindingFlags.Static)) {
+				//Console.WriteLine($"Scanning: {t.Name}");
+				foreach (MethodInfo m in t.GetMethods(BindingFlags.Static | BindingFlags.Public)) {
+					//Console.WriteLine($"Scanning method: {m.Name}");
 					if (!m.IsPublic) {
 						continue;
 					}
 
 					var rpc = m.GetCustomAttributes<RPCAttribute>().FirstOrDefault();
-					if (rpc != default) {
+					if (rpc != null) {
+						// Console.WriteLine($"Subscribing RPC: {rpc.Id}");
 						RPCManager.Subscribe(rpc);
 					}
 				}

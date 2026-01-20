@@ -8,7 +8,6 @@ namespace UdpClub.RPCs
         
         public RPCAttribute(string id) {
             Id = id;
-            RPCManager.Subscribe(this);
         }
     }
 }
