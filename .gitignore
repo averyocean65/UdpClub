@@ -213,10 +213,7 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # nuget packages
-[Pp]ackages/
-
-# Special handling
-!UdpClub/Packages/
+/packages
 
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
