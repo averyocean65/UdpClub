@@ -214,6 +214,10 @@ PublishScripts/
 *.snupkg
 # nuget packages
 [Pp]ackages/
+
+# Special handling
+!UdpClub/Packages/
+
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
