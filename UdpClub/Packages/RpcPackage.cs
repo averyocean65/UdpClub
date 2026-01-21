@@ -9,13 +9,16 @@ namespace UdpClub.Packages {
         public readonly string RpcId;
         public readonly bool Loopback;
         
-        public RpcPackage(byte[] data, IPEndPoint ep, bool loopback) : base(data, ep) {
-            this.Loopback = loopback;
+        public RpcPackage(byte[] data, IPEndPoint ep) : base(data, ep) {
             if (!IsIdValid(typeof(RpcPackage))) {
                 throw new ArgumentException("ID from data bytes is invalid!");
             }
 
+            if (UnhandledData.Length < 2) {
+                throw new ArgumentException("Insufficient data for RPC Package!");
+            }
             
+            Loopback = ByteUtils.ByteToBool(UnhandledData[0]);
             RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1));
         }
 
