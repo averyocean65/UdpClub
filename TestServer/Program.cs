@@ -20,8 +20,8 @@ namespace TestServer {
 			PackageHandler.OnMessageReceived += MessageReceivedCallback;
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
 			
-			RPCManager.ExecuteRpc += attribute =>
-				RPCManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute); 
+			RpcManager.ExecuteRpc += attribute =>
+				RpcManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute); 
 			
 			_client = new UdpServerApp("127.0.0.1", 8201);
 			_client.Connect();
@@ -53,10 +53,15 @@ namespace TestServer {
 				
 				AuthReturnPacket accept = new AuthReturnPacket(true);
 				PackageHandler.SendPackage(_client, auth.Sender, accept);
-
-				RpcPackage testRpc = new RpcPackage("HelloWorldRpc");
-				PackageHandler.SendPackageToAll(_client, _connectedUsers.Values.ToArray(), testRpc);
 			}
+			
+			if (obj is RpcPackage rpc) {
+				if (rpc.Loopback) {
+					PackageHandler.SendPackageToAll(_client, _connectedUsers.Values, rpc);
+					return;
+				}
+				PackageHandler.SendPackageToAllExcept(_client, _connectedUsers.Values, rpc.Sender, rpc);
+            }
 		}
 	}
 }

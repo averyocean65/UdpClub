@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -41,7 +42,7 @@ namespace UdpClub.Packages {
 	            Console.WriteLine($"Executing RPC Package: {rpc.rpcId}");
 #endif
 	            
-	            RPCManager.CallRpc(rpc.rpcId);
+	            RpcManager.CallRpc(rpc.RpcId);
             }
 			
 			OnPackageParsed.Invoke(package);
@@ -90,7 +91,7 @@ namespace UdpClub.Packages {
 		/// <param name="client">The sending client</param>
 		/// <param name="endPoints">The list of IPs to send to</param>
 		/// <param name="package">The data package to send</param>
-		public static void SendPackageToAll(UdpBase client, IPEndPoint[] endPoints, BasePackage package) {
+		public static void SendPackageToAll(UdpBase client, IEnumerable<IPEndPoint> endPoints, BasePackage package) {
 			foreach (IPEndPoint ep in endPoints) {
 				SendPackage(client, ep, package);
 			}
@@ -103,7 +104,7 @@ namespace UdpClub.Packages {
 		/// <param name="endPoints">The list of IPs to send to</param>
 		/// <param name="exception">The excluded IP endpoint</param>
 		/// <param name="package">The data package to send</param>
-		public static void SendPackageToAllExcept(UdpBase client, IPEndPoint[] endPoints, IPEndPoint exception,
+		public static void SendPackageToAllExcept(UdpBase client, IEnumerable<IPEndPoint> endPoints, IPEndPoint exception,
 			BasePackage package) {
 			foreach (IPEndPoint ep in endPoints) {
 				if (Equals(ep, exception)) continue;

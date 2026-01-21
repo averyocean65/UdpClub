@@ -6,16 +6,16 @@ using UdpClub.Utils;
 
 namespace UdpClub.RPCs
 {
-    public static class RPCManager {
-        private static readonly Dictionary<string, RPCAttribute> RpcProcedures = new Dictionary<string, RPCAttribute>();
+    public static class RpcManager {
+        private static readonly Dictionary<string, RpcAttribute> RpcProcedures = new Dictionary<string, RpcAttribute>();
 
-        public static Action<RPCAttribute> ExecuteRpc;
+        public static Action<RpcAttribute> ExecuteRpc;
         
         public static bool IsSubscribed(string id) {
             return RpcProcedures.ContainsKey(id);
         }
 
-        public static void Subscribe(RPCAttribute rpc) {
+        public static void Subscribe(RpcAttribute rpc) {
             if (IsSubscribed(rpc.Id)) {
                 return;
             }
@@ -26,14 +26,14 @@ namespace UdpClub.RPCs
             RpcProcedures.Add(rpc.Id, rpc);
         }
 
-        public static RPCAttribute GetRpc(string id) {
+        public static RpcAttribute GetRpc(string id) {
             return RpcProcedures
                 .FirstOrDefault(x => x.Key == id)
                 .Value;
         }
         
         public static void CallRpc(string id) {
-            RPCAttribute rpc = GetRpc(id);
+            RpcAttribute rpc = GetRpc(id);
             
 #if _DEBUG
             Console.WriteLine($"Executing RPC: {id}");
@@ -54,7 +54,7 @@ namespace UdpClub.RPCs
             
             foreach (Type t in asm.GetTypes()) {
                 IEnumerable<MethodInfo> methods = t.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    .Where(x => x.GetCustomAttributes<RPCAttribute>().Any());
+                    .Where(x => x.GetCustomAttributes<RpcAttribute>().Any());
                 
                 foreach (MethodInfo m in methods) {
                     if (!m.IsStatic) {
@@ -71,7 +71,7 @@ namespace UdpClub.RPCs
             }
         }
         
-        public static void InvokeRpcInAssembly(Assembly asm, RPCAttribute rpc) {
+        public static void InvokeRpcInAssembly(Assembly asm, RpcAttribute rpc) {
             InvokeRpcInAssembly(asm, rpc.Id);
         }
     }

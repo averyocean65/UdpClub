@@ -14,7 +14,7 @@ namespace UdpClubTests {
 			int[] subExpected3 = new int[] { 5 };
 
 			int[] subResult1 = ArrayUtils.Subarray(baseArray, 0, 3);
-			int[] subResult2 = ArrayUtils.Subarray(baseArray, 3, 2);
+			int[] subResult2 = ArrayUtils.Subarray(baseArray, 3);
 			int[] subResult3 = ArrayUtils.Subarray(baseArray, 1, 1);
 
 			Assert.AreEqual(subExpected1, subResult1);

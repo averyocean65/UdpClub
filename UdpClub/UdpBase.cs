@@ -76,10 +76,10 @@ namespace UdpClub {
 						continue;
 					}
 
-					var rpc = m.GetCustomAttributes<RPCAttribute>().FirstOrDefault();
+					var rpc = m.GetCustomAttributes<RpcAttribute>().FirstOrDefault();
 					if (rpc != null) {
 						// Console.WriteLine($"Subscribing RPC: {rpc.Id}");
-						RPCManager.Subscribe(rpc);
+						RpcManager.Subscribe(rpc);
 					}
 				}
 			}

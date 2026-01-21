@@ -18,8 +18,8 @@ namespace TestClient {
 			PackageManager.RegisterPackets();
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
 
-			RPCManager.ExecuteRpc += attribute =>
-				RPCManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute);
+			RpcManager.ExecuteRpc += attribute =>
+				RpcManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute);
 			
 			Console.WriteLine("Input username:");
 			_requestedUsername = Console.ReadLine();
@@ -51,7 +51,7 @@ namespace TestClient {
 			}
 		}
 
-		[RPC(nameof(HelloWorldRpc))]
+		[Rpc(nameof(HelloWorldRpc))]
 		public static void HelloWorldRpc() {
 			Console.WriteLine("Hello, World! (from RPC)");
 		}

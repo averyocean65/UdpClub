@@ -43,8 +43,8 @@
         <Compile Include="Packages\PackageHandler.cs" />
         <Compile Include="Packages\PackageMap.cs" />
         <Compile Include="Packages\RpcPackage.cs" />
-        <Compile Include="RPCs\RPCAttribute.cs" />
-        <Compile Include="RPCs\RPCManager.cs" />
+        <Compile Include="RPCs\RpcAttribute.cs" />
+        <Compile Include="RPCs\RpcManager.cs" />
         <Compile Include="UdpBase.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="UdpClientApp.cs" />
