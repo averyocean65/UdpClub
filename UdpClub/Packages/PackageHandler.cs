@@ -39,7 +39,7 @@ namespace UdpClub.Packages {
 	            RpcPackage rpc = package as RpcPackage;
 	            
 #if _DEBUG
-	            Console.WriteLine($"Executing RPC Package: {rpc.rpcId}");
+	            Console.WriteLine($"Executing RPC Package: {rpc.RpcId}");
 #endif
 	            
 	            RpcManager.CallRpc(rpc.RpcId);

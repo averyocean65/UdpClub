@@ -43,6 +43,9 @@ namespace TestClient {
 			if (obj is AuthReturnPacket success) {
 				if (success.Successful) {
 					Console.WriteLine("authenticated with the server");
+
+					RpcPackage rpcPackage = new RpcPackage(nameof(HelloWorldRpc), false);
+					PackageHandler.SendPackage(_client, null, rpcPackage);
 					return;
 				}
 				
