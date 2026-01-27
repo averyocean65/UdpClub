@@ -41,7 +41,7 @@ namespace TestClient {
 				if (success.Successful) {
 					Console.WriteLine("authenticated with the server");
 
-					RpcPackage rpcPackage = new RpcPackage(nameof(HelloWorldRpc), true);
+					RpcPackage rpcPackage = new RpcPackage(nameof(HelloWorldRpc), "avery", true);
 					Console.WriteLine("Sent RPC package!");
 					PackageHandler.SendPackage(_client, null, rpcPackage);
 					return;
@@ -53,8 +53,8 @@ namespace TestClient {
 		}
 
 		[Rpc(nameof(HelloWorldRpc))]
-		public static void HelloWorldRpc() {
-			Console.WriteLine("Hello, World! (from RPC)");
+		public static void HelloWorldRpc(string user) {
+			Console.WriteLine($"{user} said: Hello, World! (from RPC)");
 		}
 	}
 }

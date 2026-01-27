@@ -34,17 +34,6 @@ namespace UdpClub.Packages {
 
 			BasePackage package = (BasePackage)constructor.Invoke(new object[] { data, ep });
 			
-			// special case for RpcPackages
-            if (id == PackageMap.GetPackageId(typeof(RpcPackage))) {
-	            RpcPackage rpc = package as RpcPackage;
-	            
-#if DEBUG
-	            Console.WriteLine($"Executing RPC Package: {rpc.RpcId}");
-#endif
-	            
-	            RpcManager.CallRpc(rpc.RpcId, rpc.Parameter);
-            }
-			
 			OnPackageParsed.Invoke(package);
 		}
 

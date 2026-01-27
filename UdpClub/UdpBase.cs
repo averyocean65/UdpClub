@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using UdpClub.Packages;
 using UdpClub.RPCs;
 
 namespace UdpClub {
 	public abstract class UdpBase {
+		public readonly List<IPEndPoint> RegisteredIPs = new List<IPEndPoint>();
+		
 		/// <summary>
 		/// The assembly of the calling program, required for RPCs.
 		/// </summary>
@@ -51,11 +53,10 @@ namespace UdpClub {
 			Port = port;
 			IsServer = isServer;
 
-#if _DEBUG
-			Console.WriteLine("Initializing RPCs...");
-#endif
+			RegisteredIPs = new List<IPEndPoint>();
 			
 			InitializeRpc();
+			PackageHandler.OnPackageParsed += HandleRpcPackage;
 			
 			if (IsServer) {
 				// server-specific constructor
@@ -82,13 +83,33 @@ namespace UdpClub {
 
 					var rpc = m.GetCustomAttributes<RpcAttribute>().FirstOrDefault();
 					if (rpc != null) {
-#if DEBUG
-						Console.WriteLine($"Subscribing RPC: {rpc.Id}");
-#endif
-						
 						RpcManager.Subscribe(rpc);
 					}
 				}
+			}
+		}
+
+		private void HandleRpcPackage(BasePackage obj) {
+			if (obj.Id == PackageMap.GetPackageId(typeof(RpcPackage))) {
+				RpcPackage rpc = obj as RpcPackage;
+#if DEBUG
+				Console.WriteLine($"Handling RPC Package: {rpc.RpcId}");
+#endif
+				
+				// handle package distribution
+				if (IsServer) {
+#if DEBUG
+					Console.WriteLine($"Distributing RPC Package: {rpc.RpcId}");
+#endif
+					if (rpc.Loopback) {
+						PackageHandler.SendPackageToAll(this, RegisteredIPs, rpc);
+					}
+					else {
+						PackageHandler.SendPackageToAllExcept(this, RegisteredIPs, rpc.Sender, rpc);
+					}
+				}
+				
+				RpcManager.CallRpc(rpc.RpcId, rpc.Parameter);
 			}
 		}
 
@@ -150,7 +171,13 @@ namespace UdpClub {
 
 		protected virtual void HandlePackage(ref IPEndPoint endPoint) {
 			byte[] received = InnerClient.Receive(ref endPoint);
+
+#if DEBUG
 			Console.WriteLine($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
+#endif
+			if (!RegisteredIPs.Contains(endPoint)) {
+				RegisteredIPs.Add(endPoint);
+			}
 			
 			PackageHandler.OnMessageReceived.Invoke(received, endPoint);
 		}

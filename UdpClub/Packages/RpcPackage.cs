@@ -40,10 +40,15 @@ namespace UdpClub.Packages {
 #endif
         }
 
-        public RpcPackage(string rpcId, bool loopback = false) {
+        public RpcPackage(string rpcId, object parameter, bool loopback = false) {
             Id = PackageMap.GetPackageId(typeof(RpcPackage));
             this.RpcId = rpcId;
             this.Loopback = loopback;
+            this.Parameter = parameter;
+        }
+        
+        public RpcPackage(string rpcId, bool loopback = false) : this(rpcId, null, loopback) {
+            
         }
         
         public override byte[] ToBytes() {
