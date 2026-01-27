@@ -20,9 +20,6 @@ namespace TestServer {
 			PackageHandler.OnMessageReceived += MessageReceivedCallback;
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
 			
-			RpcManager.ExecuteRpc += attribute =>
-				RpcManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute); 
-			
 			_client = new UdpServerApp("127.0.0.1", 8201);
 			_client.Connect();
 			

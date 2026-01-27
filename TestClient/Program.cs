@@ -17,9 +17,6 @@ namespace TestClient {
 			
 			PackageManager.RegisterPackets();
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
-
-			RpcManager.ExecuteRpc += attribute =>
-				RpcManager.InvokeRpcInAssembly(Assembly.GetExecutingAssembly(), attribute);
 			
 			Console.WriteLine("Input username:");
 			_requestedUsername = Console.ReadLine();
@@ -44,7 +41,7 @@ namespace TestClient {
 				if (success.Successful) {
 					Console.WriteLine("authenticated with the server");
 
-					RpcPackage rpcPackage = new RpcPackage(nameof(HelloWorldRpc), false);
+					RpcPackage rpcPackage = new RpcPackage(nameof(HelloWorldRpc), true);
 					PackageHandler.SendPackage(_client, null, rpcPackage);
 					return;
 				}

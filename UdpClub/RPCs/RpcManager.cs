@@ -9,7 +9,7 @@ namespace UdpClub.RPCs
     public static class RpcManager {
         private static readonly Dictionary<string, RpcAttribute> RpcProcedures = new Dictionary<string, RpcAttribute>();
 
-        public static Action<RpcAttribute> ExecuteRpc;
+        public static Action<RpcAttribute> ExecuteRpc = InvokeRpc;
         
         public static bool IsSubscribed(string id) {
             return RpcProcedures.ContainsKey(id);
@@ -47,7 +47,7 @@ namespace UdpClub.RPCs
             ExecuteRpc.Invoke(rpc);
         }
         
-        public static void InvokeRpcInAssembly(Assembly asm, string id) {
+        public static void InvokeRpc(Assembly asm, string id) {
 #if _DEBUG
             Console.WriteLine($"Assembly: {asm.FullName}");
 #endif
@@ -71,8 +71,12 @@ namespace UdpClub.RPCs
             }
         }
         
-        public static void InvokeRpcInAssembly(Assembly asm, RpcAttribute rpc) {
-            InvokeRpcInAssembly(asm, rpc.Id);
+        public static void InvokeRpc(RpcAttribute rpc) {
+            InvokeRpc(UdpBase.ProgramAssembly, rpc.Id);
+        }
+        
+        public static void InvokeRpc(string id) {
+            InvokeRpc(UdpBase.ProgramAssembly, id);
         }
     }
 }
