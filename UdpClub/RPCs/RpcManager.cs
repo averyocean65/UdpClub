@@ -58,7 +58,7 @@ namespace UdpClub.RPCs
             
             foreach (Type t in asm.GetTypes()) {
                 IEnumerable<MethodInfo> methods = t.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    .Where(x => x.GetCustomAttributes<RpcAttribute>().Any());
+                    .Where(x => x.GetCustomAttributes<RpcAttribute>().Any(y => y.Id == id));
                 
                 foreach (MethodInfo m in methods) {
                     if (!m.IsStatic) {
