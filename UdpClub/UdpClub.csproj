@@ -51,6 +51,7 @@
         <Compile Include="UdpServerApp.cs" />
         <Compile Include="Utils\ArrayUtils.cs" />
         <Compile Include="Utils\ByteUtils.cs" />
+        <Compile Include="Utils\DebugUtils.cs" />
         <Compile Include="Utils\Singleton.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>

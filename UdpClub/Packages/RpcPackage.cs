@@ -37,6 +37,8 @@ namespace UdpClub.Packages {
 #if DEBUG
             Console.WriteLine($"Separator idx: {idx}");
             Console.WriteLine("RPC ID: " + RpcId);
+            Console.WriteLine($"Parameter: {Parameter}");
+            Console.WriteLine($"Loopback: {Loopback}");
 #endif
         }
 
@@ -59,9 +61,10 @@ namespace UdpClub.Packages {
             };
             data.AddRange(rpcIdBytes);
 
+            byte[] parameterBytes = ByteUtils.ToByteArray(Parameter);
             if (Parameter != null) {
                 data.Add(Separator);
-                data.AddRange(ByteUtils.ToByteArray(Parameter));
+                data.AddRange(parameterBytes);
             }
             
             return data.ToArray();

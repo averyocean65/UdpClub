@@ -27,14 +27,14 @@ namespace UdpClub.Packages {
 			ConstructorInfo constructor = constructors
 				.Where(ByteArrayConstructorPredicate)
 				.FirstOrDefault();
-
+			
 			if (constructor == null) {
 				throw new ApplicationException($"Failed to find valid constructor for {packageType.FullName}");
 			}
 
 			BasePackage package = (BasePackage)constructor.Invoke(new object[] { data, ep });
-			
 			OnPackageParsed.Invoke(package);
+			
 		}
 
 		private static bool ByteArrayConstructorPredicate(ConstructorInfo info) {
@@ -72,6 +72,7 @@ namespace UdpClub.Packages {
 		public static void SendPackage(UdpBase client, IPEndPoint endPoint, BasePackage package) {
 			byte[] data = package.ToBytes();
 			client.Send(data, endPoint);
+			OnPackageSend.Invoke(package);
 		}
 		
 		/// <summary>

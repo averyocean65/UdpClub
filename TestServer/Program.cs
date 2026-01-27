@@ -6,6 +6,8 @@ using TestShared.Packets;
 using UdpClub;
 using UdpClub.Packages;
 
+using static UdpClub.Utils.DebugUtils;
+
 namespace TestServer {
 	internal class Program {
 		private static Dictionary<string, IPEndPoint> _connectedUsers = new Dictionary<string, IPEndPoint>();
@@ -13,12 +15,17 @@ namespace TestServer {
 
 		public static void Main(string[] args) {
 			PackageManager.RegisterPackets();
+			PackageHandler.OnPackageSend += PackageSentCallback;
 			PackageHandler.OnPackageParsed += PackageParsedCallback;
 
 			_client = new UdpServerApp("127.0.0.1", 8201);
 			_client.Connect();
 
 			while (true) { }
+		}
+
+		private static void PackageSentCallback(BasePackage obj) {
+			DebugPrint($"Package sent: {obj.Id}");
 		}
 
 		private static void PackageParsedCallback(BasePackage obj) {
