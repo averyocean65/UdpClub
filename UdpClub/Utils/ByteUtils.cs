@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using static UdpClub.Utils.DebugUtils;
@@ -33,8 +34,14 @@ namespace UdpClub.Utils {
 			BinaryFormatter bf = new BinaryFormatter();
 			using(MemoryStream ms = new MemoryStream(data))
 			{
-				object obj = bf.Deserialize(ms);
-				return (T)obj;
+				try {
+					object obj = bf.Deserialize(ms);
+					return (T)obj;
+				}
+				catch (Exception ex) {
+					Console.Error.WriteLine(ex.Message);
+					return default(T);
+				}
 			}
 		}
 	}
