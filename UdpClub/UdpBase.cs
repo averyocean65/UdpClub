@@ -51,8 +51,12 @@ namespace UdpClub {
 			Port = port;
 			IsServer = isServer;
 
+#if _DEBUG
 			Console.WriteLine("Initializing RPCs...");
+#endif
+			
 			InitializeRpc();
+			
 			if (IsServer) {
 				// server-specific constructor
 				InnerClient = new UdpClient(Port);
@@ -61,7 +65,7 @@ namespace UdpClub {
 			
 			InnerClient = new UdpClient();
 		}
-		
+
 		~UdpBase() {
 			Disconnect();
 			InnerClient.Dispose();
@@ -78,7 +82,10 @@ namespace UdpClub {
 
 					var rpc = m.GetCustomAttributes<RpcAttribute>().FirstOrDefault();
 					if (rpc != null) {
-						// Console.WriteLine($"Subscribing RPC: {rpc.Id}");
+#if DEBUG
+						Console.WriteLine($"Subscribing RPC: {rpc.Id}");
+#endif
+						
 						RpcManager.Subscribe(rpc);
 					}
 				}

@@ -40,8 +40,23 @@
         <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Client\ClientCallbacks.cs" />
+        <Compile Include="Client\ClientLogic.cs" />
+        <Compile Include="LogicHandler.cs" />
+        <Compile Include="Packets\AuthPacket.cs" />
+        <Compile Include="Packets\AuthReturnPacket.cs" />
+        <Compile Include="Packets\PacketManager.cs" />
+        <Compile Include="Packets\PacketConstants.cs" />
         <Compile Include="Program.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Server\ServerCallbacks.cs" />
+        <Compile Include="Server\ServerLogic.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\UdpClub\UdpClub.csproj">
+        <Project>{0d4caf70-c11d-436c-b1bf-d443fb3bd1db}</Project>
+        <Name>UdpClub</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

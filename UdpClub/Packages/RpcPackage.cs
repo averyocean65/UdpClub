@@ -6,7 +6,10 @@ using UdpClub.Utils;
 
 namespace UdpClub.Packages {
     public class RpcPackage : BasePackage {
+        private const byte Separator = 0xFF;
+        
         public readonly string RpcId;
+        public readonly object Parameter;
         public readonly bool Loopback;
         
         public RpcPackage(byte[] data, IPEndPoint ep) : base(data, ep) {
@@ -19,7 +22,22 @@ namespace UdpClub.Packages {
             }
             
             Loopback = ByteUtils.ByteToBool(UnhandledData[0]);
-            RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1));
+
+            int idx = Array.IndexOf(UnhandledData, Separator);
+            
+            if (idx < 0) {
+                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1));
+                Parameter = null;
+            }
+            else {
+                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1, idx - 1));
+                Parameter = ByteUtils.FromByteArray<object>(UnhandledData.Subarray(idx));
+            }
+            
+#if DEBUG
+            Console.WriteLine($"Separator idx: {idx}");
+            Console.WriteLine("RPC ID: " + RpcId);
+#endif
         }
 
         public RpcPackage(string rpcId, bool loopback = false) {
@@ -35,6 +53,12 @@ namespace UdpClub.Packages {
                 ByteUtils.BoolToByte(Loopback)
             };
             data.AddRange(rpcIdBytes);
+
+            if (Parameter != null) {
+                data.Add(Separator);
+                data.AddRange(ByteUtils.ToByteArray(Parameter));
+            }
+            
             return data.ToArray();
         }
     }

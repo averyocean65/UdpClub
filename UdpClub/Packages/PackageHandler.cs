@@ -38,11 +38,11 @@ namespace UdpClub.Packages {
             if (id == PackageMap.GetPackageId(typeof(RpcPackage))) {
 	            RpcPackage rpc = package as RpcPackage;
 	            
-#if _DEBUG
+#if DEBUG
 	            Console.WriteLine($"Executing RPC Package: {rpc.RpcId}");
 #endif
 	            
-	            RpcManager.CallRpc(rpc.RpcId);
+	            RpcManager.CallRpc(rpc.RpcId, rpc.Parameter);
             }
 			
 			OnPackageParsed.Invoke(package);
@@ -51,7 +51,7 @@ namespace UdpClub.Packages {
 		private static bool ByteArrayConstructorPredicate(ConstructorInfo info) {
 			ParameterInfo[] parameters = info.GetParameters();
 
-#if _DEBUG
+#if DEBUG
 			Console.WriteLine($"-- DEBUGGING: {info.Name} --");
 			foreach (ParameterInfo pInfo in parameters) {
 				Console.WriteLine($"\t{pInfo.ParameterType}");
@@ -64,7 +64,7 @@ namespace UdpClub.Packages {
 			
 			bool constructorMatch = info.IsPublic && info.IsConstructor;
 			
-#if _DEBUG
+#if DEBUG
 			Console.WriteLine($"is a constructor: {constructorMatch}");
 			Console.WriteLine($"args match: {parameterMatch}");
 #endif

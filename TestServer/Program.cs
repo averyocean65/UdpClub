@@ -51,14 +51,6 @@ namespace TestServer {
 				AuthReturnPacket accept = new AuthReturnPacket(true);
 				PackageHandler.SendPackage(_client, auth.Sender, accept);
 			}
-			
-			if (obj is RpcPackage rpc) {
-				if (rpc.Loopback) {
-					PackageHandler.SendPackageToAll(_client, _connectedUsers.Values, rpc);
-					return;
-				}
-				PackageHandler.SendPackageToAllExcept(_client, _connectedUsers.Values, rpc.Sender, rpc);
-            }
 		}
 	}
 }

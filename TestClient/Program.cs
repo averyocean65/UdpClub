@@ -42,6 +42,7 @@ namespace TestClient {
 					Console.WriteLine("authenticated with the server");
 
 					RpcPackage rpcPackage = new RpcPackage(nameof(HelloWorldRpc), true);
+					Console.WriteLine("Sent RPC package!");
 					PackageHandler.SendPackage(_client, null, rpcPackage);
 					return;
 				}
