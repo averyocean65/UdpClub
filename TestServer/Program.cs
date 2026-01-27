@@ -25,7 +25,7 @@ namespace TestServer {
 		}
 
 		private static void PackageSentCallback(BasePackage obj) {
-			DebugPrint($"Package sent: {obj.Id}");
+			DebugPrintln($"Package sent: {obj.Id}");
 		}
 
 		private static void PackageParsedCallback(BasePackage obj) {

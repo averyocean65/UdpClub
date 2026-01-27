@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using static UdpClub.Utils.DebugUtils;
+
 namespace UdpClub.Utils {
 	public static class ByteUtils {
 		public static bool ByteToBool(byte input) {

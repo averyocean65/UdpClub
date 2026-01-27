@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using UdpClub.RPCs;
+
+using static UdpClub.Utils.DebugUtils;
 
 namespace UdpClub.Packages {
 	public static class PackageHandler {
-		public static Action<BasePackage> OnPackageSend;
+		public static Action<BasePackage> OnPackageSend = OnPacketSend;
 		public static Action<byte[], IPEndPoint> OnMessageReceived = ParsePackage;
 		public static Action<BasePackage> OnPackageParsed;
+		
+		private static void OnPacketSend(BasePackage obj) {
+			DebugPrintln($"Sending Package: {BitConverter.ToString(obj.ToBytes())}");
+		}
 
 		private static void ParsePackage(byte[] data, IPEndPoint ep) {
 			if (data.Length < 1) {
@@ -27,23 +32,27 @@ namespace UdpClub.Packages {
 			ConstructorInfo constructor = constructors
 				.Where(ByteArrayConstructorPredicate)
 				.FirstOrDefault();
+			DebugPrintln($"Constructor is null? {constructor == null}");
 			
 			if (constructor == null) {
 				throw new ApplicationException($"Failed to find valid constructor for {packageType.FullName}");
 			}
 
+			DebugPrintln("Calling constructor!");
 			BasePackage package = (BasePackage)constructor.Invoke(new object[] { data, ep });
-			OnPackageParsed.Invoke(package);
+			DebugPrintln($"Parsed Package: {package.Id}");
 			
+			OnPackageParsed.Invoke(package);
 		}
 
 		private static bool ByteArrayConstructorPredicate(ConstructorInfo info) {
 			ParameterInfo[] parameters = info.GetParameters();
 
+
+			DebugPrintln($"-- DEBUGGING: {info.Name} --");
 #if DEBUG
-			Console.WriteLine($"-- DEBUGGING: {info.Name} --");
 			foreach (ParameterInfo pInfo in parameters) {
-				Console.WriteLine($"\t{pInfo.ParameterType}");
+				DebugPrintln($"\t{pInfo.ParameterType}");
 			}
 #endif
 			
@@ -53,10 +62,8 @@ namespace UdpClub.Packages {
 			
 			bool constructorMatch = info.IsPublic && info.IsConstructor;
 			
-#if DEBUG
-			Console.WriteLine($"is a constructor: {constructorMatch}");
-			Console.WriteLine($"args match: {parameterMatch}");
-#endif
+			DebugPrintln($"is a constructor: {constructorMatch}");
+			DebugPrintln($"args match: {parameterMatch}");
 
 			return parameterMatch && constructorMatch;	
 		}
@@ -70,9 +77,9 @@ namespace UdpClub.Packages {
 		/// <param name="endPoint">The IP to send to (disregard if you're a client communicating to a server)</param>
 		/// <param name="package">The data package to send</param>
 		public static void SendPackage(UdpBase client, IPEndPoint endPoint, BasePackage package) {
+			OnPackageSend.Invoke(package);
 			byte[] data = package.ToBytes();
 			client.Send(data, endPoint);
-			OnPackageSend.Invoke(package);
 		}
 		
 		/// <summary>

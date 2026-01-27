@@ -4,6 +4,8 @@ using System.Net;
 using System.Text;
 using UdpClub.Utils;
 
+using static UdpClub.Utils.DebugUtils;
+
 namespace UdpClub.Packages {
     public class RpcPackage : BasePackage {
         private const byte Separator = 0xFF;
@@ -16,30 +18,31 @@ namespace UdpClub.Packages {
             if (!IsIdValid(typeof(RpcPackage))) {
                 throw new ArgumentException("ID from data bytes is invalid!");
             }
+            
+            DebugPrintln("RPC package is valid!");
 
             if (UnhandledData.Length < 2) {
                 throw new ArgumentException("Insufficient data for RPC Package!");
             }
             
             Loopback = ByteUtils.ByteToBool(UnhandledData[0]);
-
             int idx = Array.IndexOf(UnhandledData, Separator);
             
-            if (idx < 0) {
+            DebugPrintln($"Running subarray. Valid parameter? {idx < 1}");
+            
+            if (idx < 1) {
                 RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1));
                 Parameter = null;
             }
             else {
                 RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1, idx - 1));
-                Parameter = ByteUtils.FromByteArray<object>(UnhandledData.Subarray(idx));
+                Parameter = ByteUtils.FromByteArray<object>(UnhandledData.Subarray(idx + 1));
             }
             
-#if DEBUG
-            Console.WriteLine($"Separator idx: {idx}");
-            Console.WriteLine("RPC ID: " + RpcId);
-            Console.WriteLine($"Parameter: {Parameter}");
-            Console.WriteLine($"Loopback: {Loopback}");
-#endif
+            DebugPrintln($"Separator idx: {idx}");
+            DebugPrintln("RPC ID: " + RpcId);
+            DebugPrintln($"Parameter: {Parameter}");
+            DebugPrintln($"Loopback: {Loopback}");
         }
 
         public RpcPackage(string rpcId, object parameter, bool loopback = false) {
