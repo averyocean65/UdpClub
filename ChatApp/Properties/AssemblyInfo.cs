@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ChatApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SubsurfaceStudios")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ChatApp")]
-[assembly: AssemblyCopyright("Copyright © SubsurfaceStudios 2026")]
+[assembly: AssemblyCopyright("Copyright ©  2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
