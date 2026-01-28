@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using UdpClub.Packages;
 using UdpClub.RPCs;
 
+using static UdpClub.Utils.DebugUtils;
+
 namespace UdpClub {
 	public abstract class UdpBase {
 		public readonly List<IPEndPoint> RegisteredIPs = new List<IPEndPoint>();
@@ -74,9 +76,9 @@ namespace UdpClub {
 
 		protected void InitializeRpc() {
 			foreach (Type t in ProgramAssembly.GetTypes()) {
-				//Console.WriteLine($"Scanning: {t.Name}");
+				DebugPrintln($"Scanning: {t.Name}");
 				foreach (MethodInfo m in t.GetMethods(BindingFlags.Static | BindingFlags.Public)) {
-					//Console.WriteLine($"Scanning method: {m.Name}");
+					DebugPrintln($"Scanning method: {m.Name}");
 					if (!m.IsPublic) {
 						continue;
 					}
@@ -96,15 +98,11 @@ namespace UdpClub {
 			
 			if (obj.Id == PackageMap.GetPackageId(typeof(RpcPackage))) {
 				RpcPackage rpc = obj as RpcPackage;
-#if DEBUG
-				Console.WriteLine($"Handling RPC Package: {rpc.RpcId}");
-#endif
+				DebugPrintln($"Handling RPC Package: {rpc.RpcId}");
 				
 				// handle package distribution
 				if (IsServer) {
-#if DEBUG
-					Console.WriteLine($"Distributing RPC Package: {rpc.RpcId}");
-#endif
+					DebugPrintln($"Distributing RPC Package: {rpc.RpcId}");
 					if (rpc.Loopback) {
 						PackageHandler.SendPackageToAll(this, RegisteredIPs, rpc);
 					}
