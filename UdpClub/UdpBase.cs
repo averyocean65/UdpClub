@@ -76,10 +76,10 @@ namespace UdpClub {
 
 		protected void InitializeRpc() {
 			foreach (Type t in ProgramAssembly.GetTypes()) {
-				DebugPrintln($"Scanning: {t.Name}");
+				DebugPrintln($"Scanning type: {t.Name}");
 				foreach (MethodInfo m in t.GetMethods(BindingFlags.Static | BindingFlags.Public)) {
 					DebugPrintln($"Scanning method: {m.Name}");
-					if (!m.IsPublic) {
+					if (!m.IsPublic || !m.IsStatic) {
 						continue;
 					}
 
