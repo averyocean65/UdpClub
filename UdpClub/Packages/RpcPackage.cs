@@ -15,7 +15,7 @@ namespace UdpClub.Packages {
         public readonly bool Loopback;
         
         public RpcPackage(byte[] data, IPEndPoint ep) : base(data, ep) {
-            if (!IsIdValid(typeof(RpcPackage))) {
+            if (!IsPackageType(typeof(RpcPackage))) {
                 throw new ArgumentException("ID from data bytes is invalid!");
             }
             

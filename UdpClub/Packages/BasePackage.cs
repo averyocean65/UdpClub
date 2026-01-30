@@ -28,7 +28,7 @@ namespace UdpClub.Packages {
 				.Key;
 		}
 		
-		protected bool IsIdValid(Type type) {
+		public bool IsPackageType(Type type) {
 			return GetRequiredId(type) == Id;
 		}
 

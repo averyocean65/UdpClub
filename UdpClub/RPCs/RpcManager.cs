@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
-using UdpClub.Utils;
+using UdpClub.Packages;
+using static UdpClub.Utils.DebugUtils;
 
 namespace UdpClub.RPCs
 {
     public static class RpcManager {
         private static readonly Dictionary<string, RpcAttribute> RpcProcedures = new Dictionary<string, RpcAttribute>();
 
-        public static Action<RpcAttribute, object> ExecuteRpc = InvokeRpc;
+        public static Action<RpcAttribute, object> ExecuteLocalRpc = InvokeRpcFromId;
         
         public static bool IsSubscribed(string id) {
             return RpcProcedures.ContainsKey(id);
@@ -20,41 +22,33 @@ namespace UdpClub.RPCs
                 return;
             }
             
-#if DEBUG
-            Console.WriteLine($"Subscribing RPC: {rpc.Id}");
-#endif
+            DebugPrintln($"Subscribing RPC: {rpc.Id}");
             RpcProcedures.Add(rpc.Id, rpc);
         }
 
-        public static RpcAttribute GetRpc(string id) {
-#if DEBUG
-            Console.WriteLine($"Getting RPC: {id}");
-#endif
+        public static RpcAttribute GetRpcFromRegistry(string id) {
+            DebugPrintln($"Receiving RPC from registry: {id}");
             
             return RpcProcedures
                 .FirstOrDefault(x => x.Key == id)
                 .Value;
         }
         
-        public static void CallRpc(string id, object parameter) {
-            RpcAttribute rpc = GetRpc(id);
+        public static void CallLocalRpc(string id, object parameter) {
+            RpcAttribute rpc = GetRpcFromRegistry(id);
             
-#if DEBUG
-            Console.WriteLine($"Executing RPC: {id}");
-            Console.WriteLine($"Registered RPCs: {RpcProcedures.Count}");
-            Console.WriteLine($"RPC is null? {rpc == null}");
-#endif
+            DebugPrintln($"Executing RPC: {id}");
+            DebugPrintln($"Registered RPCs: {RpcProcedures.Count}");
+            DebugPrintln($"RPC is null? {rpc == null}");
             
             if (rpc == null) {
                 return;
             }
-            ExecuteRpc.Invoke(rpc, parameter);
+            ExecuteLocalRpc.Invoke(rpc, parameter);
         }
         
-        public static void InvokeRpc(Assembly asm, string id, object parameter) {
-#if DEBUG
-            Console.WriteLine($"Assembly: {asm.FullName}");
-#endif
+        public static void InvokeRpcFromId(Assembly asm, string id, object parameter) {
+            DebugPrintln($"Assembly: {asm.FullName}");
             
             foreach (Type t in asm.GetTypes()) {
                 IEnumerable<MethodInfo> methods = t.GetMethods(BindingFlags.Public | BindingFlags.Static)
@@ -75,12 +69,32 @@ namespace UdpClub.RPCs
             }
         }
         
-        public static void InvokeRpc(RpcAttribute rpc, object parameter) {
-            InvokeRpc(UdpBase.ProgramAssembly, rpc.Id, parameter);
+        public static void InvokeRpcFromId(RpcAttribute rpc, object parameter) {
+            InvokeRpcFromId(UdpBase.ProgramAssembly, rpc.Id, parameter);
         }
         
-        public static void InvokeRpc(string id, object parameter) {
-            InvokeRpc(UdpBase.ProgramAssembly, id, parameter);
+        public static void InvokeRpcFromId(string id, object parameter) {
+            InvokeRpcFromId(UdpBase.ProgramAssembly, id, parameter);
+        }
+
+        public static void BroadcastRpc(UdpBase client, IPEndPoint ep, string rpcName, object parameter, bool loopback = false) {
+            RpcPackage package = new RpcPackage(rpcName, parameter, loopback);
+            PackageHandler.SendPackage(client, ep, package);
+        }
+        
+        public static void BroadcastRpc(UdpBase client, string rpcName, object parameter, bool loopback = false) {
+            RpcPackage package = new RpcPackage(rpcName, parameter, loopback);
+            PackageHandler.SendPackage(client, null, package);
+        }
+        
+        public static void BroadcastRpcToClients(UdpBase client, IEnumerable<IPEndPoint> receivers, string rpcName, object parameter) {
+            RpcPackage package = new RpcPackage(rpcName, parameter);
+            PackageHandler.SendPackageToAll(client, receivers, package);
+        }
+        
+        public static void BroadcastRpcToClients(UdpBase client, IEnumerable<IPEndPoint> receivers, IPEndPoint exception, string rpcName, object parameter) {
+            RpcPackage package = new RpcPackage(rpcName, parameter);
+            PackageHandler.SendPackageToAllExcept(client, receivers, exception, package);
         }
     }
 }

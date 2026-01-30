@@ -92,9 +92,7 @@ namespace UdpClub {
 		}
 
 		private void HandleRpcPackage(BasePackage obj) {
-#if DEBUG
-			Console.WriteLine($"HandleRpcPackage: {obj.Id}");
-#endif
+			DebugPrintln($"HandleRpcPackage: {obj.Id}");
 			
 			if (obj.Id == PackageMap.GetPackageId(typeof(RpcPackage))) {
 				RpcPackage rpc = obj as RpcPackage;
@@ -111,7 +109,7 @@ namespace UdpClub {
 					}
 				}
 				
-				RpcManager.CallRpc(rpc.RpcId, rpc.Parameter);
+				RpcManager.CallLocalRpc(rpc.RpcId, rpc.Parameter);
 			}
 		}
 
@@ -173,10 +171,8 @@ namespace UdpClub {
 
 		protected virtual void HandlePackage(ref IPEndPoint endPoint) {
 			byte[] received = InnerClient.Receive(ref endPoint);
-
-#if DEBUG
-			Console.WriteLine($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
-#endif
+			
+			DebugPrintln($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
 			if (!RegisteredIPs.Contains(endPoint)) {
 				RegisteredIPs.Add(endPoint);
 			}

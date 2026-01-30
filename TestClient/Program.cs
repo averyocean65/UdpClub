@@ -7,6 +7,8 @@ using UdpClub;
 using UdpClub.Packages;
 using UdpClub.RPCs;
 
+using static UdpClub.Utils.DebugUtils;
+
 namespace TestClient {
 	internal class Program {
 		private static UdpClientApp _client;
@@ -34,15 +36,14 @@ namespace TestClient {
 		
 		private static void PackageParsedCallback(BasePackage obj) {
 			if (obj is MessagePacket message) {
-				Console.WriteLine($"Message packet from {message.Username}: {message.Message}");
+				DebugPrintln($"Message packet from {message.Username}: {message.Message}");
 			}
 			
 			if (obj is AuthReturnPacket success) {
 				if (success.Successful) {
 					Console.WriteLine("authenticated with the server");
-
-					RpcPackage rpcPackage = new RpcPackage(nameof(HelloUserRpc), _requestedUsername, true);
-					PackageHandler.SendPackage(_client, null, rpcPackage);
+					
+					RpcManager.BroadcastRpc(_client, nameof(HelloUserRpc), _requestedUsername, true);
 					return;
 				}
 				

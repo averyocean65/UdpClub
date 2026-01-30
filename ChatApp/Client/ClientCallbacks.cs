@@ -1,10 +1,19 @@
 using System;
+using ChatApp.Packets;
 using UdpClub.Packages;
 
 namespace ChatApp.Client {
     public static class ClientCallbacks {
         public static void OnPackageParsed(BasePackage package) {
-            Console.WriteLine($"package to client (id): {package.Id}");
+            if (package.IsPackageType(typeof(AuthReturnPacket))) {
+                AuthReturnPacket authReturn = (AuthReturnPacket)package;
+                if (!authReturn.Success) {
+                    Console.Error.WriteLine("Authentication rejected by server.");
+                    Environment.Exit(0);
+                }
+                
+                Console.WriteLine("Connection authorized!");
+            }
         }
     }
 }

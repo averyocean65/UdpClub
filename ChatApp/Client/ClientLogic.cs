@@ -1,27 +1,29 @@
+using System;
 using ChatApp.Packets;
 using UdpClub;
 using UdpClub.Packages;
+using UdpClub.RPCs;
 
 namespace ChatApp.Client {
     public class ClientLogic : LogicHandler {
         public string Username;
-        private UdpBase _client;
+        public readonly UdpBase Client;
         
         public ClientLogic(UdpBase client) {
-            _client = client;
+            Client = client;
         }
-        
+
         public void Init() {
             PackageHandler.OnPackageParsed += ClientCallbacks.OnPackageParsed;
-            _client.OnConnected += SendAuthPacket;
+            Client.OnConnected += SendAuthPacket;
+            
             Username = Program.PromptUser("Please input your username");
-
-            _client.Connect();
+            Client.Connect();
         }
 
         private void SendAuthPacket() {
             AuthPacket auth = new AuthPacket(Username);
-            PackageHandler.SendPackage(_client, null, auth);
+            PackageHandler.SendPackage(Client, null, auth);
         }
 
         public void RunLoop() {
@@ -29,6 +31,11 @@ namespace ChatApp.Client {
             while (true) {
                 message = Program.PromptUser("");
             }
+        }
+
+        [Rpc(nameof(WelcomeUser))]
+        public static void WelcomeUser(string username) {
+            Console.WriteLine($"{username} has entered the chat.");
         }
     }
 }

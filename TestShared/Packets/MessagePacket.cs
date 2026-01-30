@@ -12,7 +12,7 @@ namespace TestShared.Packets {
 		public string Message { get; private set; } = string.Empty;
 		
 		public MessagePacket(byte[] data, IPEndPoint ep) : base(data, ep) {
-			if (!IsIdValid(typeof(MessagePacket))) {
+			if (!IsPackageType(typeof(MessagePacket))) {
 				throw new ArgumentException("ID from byte data is not valid!");
 			}
 			

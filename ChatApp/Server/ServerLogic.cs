@@ -7,16 +7,17 @@ using UdpClub.Packages;
 
 namespace ChatApp.Server {
     public class ServerLogic : LogicHandler {
-        public static Dictionary<string, IPEndPoint> users;
-        private UdpBase _client;
+        public static Dictionary<string, IPEndPoint> Users;
+        public static UdpBase Client;
         
         public ServerLogic(UdpBase client) {
-            _client = client;
+            Users = new Dictionary<string, IPEndPoint>();
+            Client = client;
         }
         
         public void Init() {
             PackageHandler.OnPackageParsed += ServerCallbacks.OnPackageParsed;
-            _client.Connect();
+            Client.Connect();
         }
 
         public void RunLoop() {

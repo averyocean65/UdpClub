@@ -9,7 +9,7 @@ namespace ChatApp.Packets {
         public string Username { get; private set; }
         
         public AuthPacket(byte[] data, IPEndPoint ep) : base(data, ep) {
-            if (!IsIdValid(typeof(AuthPacket))) {
+            if (!IsPackageType(typeof(AuthPacket))) {
                 throw new System.InvalidCastException("IDs don't match!");
             }
 

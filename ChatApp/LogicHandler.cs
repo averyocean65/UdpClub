@@ -1,3 +1,5 @@
+using UdpClub;
+
 namespace ChatApp {
     public interface LogicHandler {
         void Init();

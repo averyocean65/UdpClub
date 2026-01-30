@@ -9,7 +9,7 @@ namespace TestShared.Packets {
 		public string Username { get; private set; }
 		
 		public AuthPacket(byte[] data, IPEndPoint ep) : base(data, ep) {
-			if (!IsIdValid(typeof(AuthPacket))) {
+			if (!IsPackageType(typeof(AuthPacket))) {
 				throw new ArgumentException("ID from data bytes is invalid!");
 			}
 
