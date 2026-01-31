@@ -8,10 +8,6 @@ namespace ChatApp.Packets {
         public bool Success;
         
         public AuthReturnPacket(byte[] data, IPEndPoint ep) : base(data, ep) {
-            if (!IsPackageType(typeof(AuthReturnPacket))) {
-                throw new ArgumentException("Invalid ID");
-            }
-            
             if (UnhandledData.Length < 1) {
                 throw new ArgumentException("UnhandledData < 1");
             }
@@ -20,7 +16,7 @@ namespace ChatApp.Packets {
         }
 
         public AuthReturnPacket(bool success) {
-            Id = PackageMap.GetPackageId(typeof(AuthReturnPacket));
+            Id = GetRequiredId();
             Success = success;
         }
         
