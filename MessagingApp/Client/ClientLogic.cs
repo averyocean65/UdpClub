@@ -6,11 +6,12 @@ using UdpClub.RPCs;
 
 namespace ChatApp.Client {
     public class ClientLogic : LogicHandler {
-        public readonly string Username;
-        public readonly UdpBase Client;
+        public static string Username { get; private set; }
+        public static UdpBase Client { get; private set; }
 
         public static Action<string> OnUserJoin;
         public static Action<string> OnUserLeave;
+        public static Action<string[]> OnSyncClient;
         
         public ClientLogic(UdpBase client, string username) {
             Client = client;
@@ -38,6 +39,11 @@ namespace ChatApp.Client {
         [Rpc(nameof(UserLeave))]
         public static void UserLeave(string username) {
             OnUserLeave.Invoke(username);
+        }
+
+        [Rpc(nameof(SyncClient))]
+        public static void SyncClient(string[] prevUsers) {
+            OnSyncClient.Invoke(prevUsers);
         }
     }
 }

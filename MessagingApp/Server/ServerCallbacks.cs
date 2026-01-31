@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using ChatApp.Client;
 using ChatApp.Packets;
 using UdpClub;
@@ -22,6 +23,11 @@ namespace ChatApp.Server {
 
                     RpcManager.BroadcastRpcToClients(ServerLogic.Client, ServerLogic.Users.Values,
                         nameof(ClientLogic.UserJoin), auth.Username);
+
+                    if (ServerLogic.Users.Count > 1) {
+                        RpcManager.BroadcastRpc(ServerLogic.Client, auth.Sender, nameof(ClientLogic.SyncClient),
+                            ServerLogic.Users.Keys.ToArray());
+                    }
                 }
                 
                 AuthReturnPacket authReturn = new AuthReturnPacket(canLogIn);

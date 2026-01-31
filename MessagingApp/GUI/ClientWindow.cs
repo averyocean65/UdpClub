@@ -10,7 +10,8 @@ namespace ChatApp.GUI {
 			InitializeComponent();
 
 			ClientLogic.OnUserJoin += OnUserJoin;
-			ClientLogic.OnUserLeave += OnUserJoin;
+			ClientLogic.OnUserLeave += OnUserLeave;
+			ClientLogic.OnSyncClient += OnSyncClient;
 
 			Closed += OnClosed;
 		}
@@ -20,7 +21,7 @@ namespace ChatApp.GUI {
 		}
 		
 		private void LeaveChatroom() {
-			// TODO: implement leaving logic
+			RpcManager.BroadcastRpc(ClientLogic.Client, nameof(ClientLogic.UserLeave), ClientLogic.Username, true);
 		}
 
 		private void OnUserJoin(string obj) {
@@ -30,13 +31,33 @@ namespace ChatApp.GUI {
 		private void OnUserLeave(string obj) {
 			memberList.Items.Remove(obj);
 		}
+		
+		private void OnSyncClient(string[] obj) {
+			if (obj == null) {
+				return;
+			}
+
+			if (obj.Length < 1) {
+				return;
+			}
+			
+			foreach(string username in obj)
+			{
+				if (username == ClientLogic.Username) {
+					continue;
+				}
+				
+				memberList.Items.Add(username);
+			}
+		}
 
 		private void sendButton_Click(object sender, EventArgs e) {
 			
 		}
 
 		private void leaveButton_Click(object sender, EventArgs e) {
-			throw new System.NotImplementedException();
+			LeaveChatroom();
+			Close();
 		}
 	}
 }
