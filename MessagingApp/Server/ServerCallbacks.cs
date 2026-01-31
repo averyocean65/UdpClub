@@ -21,7 +21,7 @@ namespace ChatApp.Server {
                     ServerLogic.Users.Add(auth.Username, auth.Sender);
 
                     RpcManager.BroadcastRpcToClients(ServerLogic.Client, ServerLogic.Users.Values,
-                        nameof(ClientLogic.WelcomeUser), auth.Username);
+                        nameof(ClientLogic.UserJoin), auth.Username);
                 }
                 
                 AuthReturnPacket authReturn = new AuthReturnPacket(canLogIn);

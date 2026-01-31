@@ -20,8 +20,6 @@ namespace ChatApp.Server {
             Client.Connect();
         }
 
-        public void RunLoop() {
-            while (true) { }
-        }
+        public void RunLoop() { }
     }
 }

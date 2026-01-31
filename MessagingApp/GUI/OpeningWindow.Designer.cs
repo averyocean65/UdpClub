@@ -41,7 +41,7 @@
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(288, 27);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Would you like to run as a server or client?";
+			this.label1.Text = "Would you like to run this app as a server or client?";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// clientButton

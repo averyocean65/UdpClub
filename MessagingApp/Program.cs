@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ChatApp.GUI;
+using ChatApp.Packets;
 
 namespace ChatApp {
 	static class Program {
@@ -12,6 +10,8 @@ namespace ChatApp {
 		/// </summary>
 		[STAThread]
 		static void Main() {
+			PackageRegister.RegisterPackets();
+			
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new OpeningWindow());
