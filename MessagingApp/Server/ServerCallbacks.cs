@@ -26,7 +26,7 @@ namespace ChatApp.Server {
 
                     if (ServerLogic.Users.Count > 1) {
                         RpcManager.BroadcastRpc(ServerLogic.Client, auth.Sender, nameof(ClientLogic.SyncClient),
-                            ServerLogic.Users.Keys.ToArray());
+                            ServerLogic.Users.Keys.ToArray(), runOnServer: false);
                     }
                 }
                 
@@ -34,6 +34,10 @@ namespace ChatApp.Server {
                 
                 DebugPrintln($"Sending package to: {auth.Sender}");
                 PackageHandler.SendPackage(ServerLogic.Client, auth.Sender, authReturn);
+            } else if (package.IsPackageType(typeof(MessagePacket))) {
+                // Redirect package
+                DebugPrintln("Redirecting message package...");
+                PackageHandler.SendPackageToAllExcept(ServerLogic.Client, ServerLogic.Users.Values, package.Sender, package);
             }
         }
     }

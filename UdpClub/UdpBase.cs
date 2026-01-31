@@ -107,6 +107,10 @@ namespace UdpClub {
 					else {
 						PackageHandler.SendPackageToAllExcept(this, RegisteredIPs, rpc.Sender, rpc);
 					}
+
+					if (!rpc.RunOnServer) {
+						return;
+					}
 				}
 				
 				RpcManager.CallLocalRpc(rpc.RpcId, rpc.Parameter);

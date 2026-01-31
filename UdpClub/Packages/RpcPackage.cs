@@ -13,6 +13,7 @@ namespace UdpClub.Packages {
         public readonly string RpcId;
         public readonly object Parameter;
         public readonly bool Loopback;
+        public readonly bool RunOnServer;
         
         public RpcPackage(byte[] data, IPEndPoint ep) : base(data, ep) {
             if (!IsPackageType(typeof(RpcPackage))) {
@@ -21,21 +22,24 @@ namespace UdpClub.Packages {
             
             DebugPrintln("RPC package is valid!");
 
-            if (UnhandledData.Length < 2) {
+            if (UnhandledData.Length < 3) {
                 throw new ArgumentException("Insufficient data for RPC Package!");
             }
             
             Loopback = ByteUtils.ByteToBool(UnhandledData[0]);
+            RunOnServer = ByteUtils.ByteToBool(UnhandledData[1]);
+
+            int start = 2;
             int idx = Array.IndexOf(UnhandledData, Separator);
             
             DebugPrintln($"Running subarray. Valid parameter? {idx < 1}");
             
             if (idx < 1) {
-                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1));
+                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(start));
                 Parameter = null;
             }
             else {
-                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(1, idx - 1));
+                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(start, idx - start));
                 Parameter = ByteUtils.FromByteArray<object>(UnhandledData.Subarray(idx + 1));
             }
             
@@ -45,22 +49,22 @@ namespace UdpClub.Packages {
             DebugPrintln($"Loopback: {Loopback}");
         }
 
-        public RpcPackage(string rpcId, object parameter, bool loopback = false) {
+        public RpcPackage(string rpcId, object parameter, bool loopback = false, bool runOnServer = true) {
             Id = PackageMap.GetPackageId(typeof(RpcPackage));
             this.RpcId = rpcId;
             this.Loopback = loopback;
             this.Parameter = parameter;
+            this.RunOnServer = runOnServer;
         }
         
-        public RpcPackage(string rpcId, bool loopback = false) : this(rpcId, null, loopback) {
-            
-        }
+        public RpcPackage(string rpcId, bool loopback = false, bool runOnServer = true) : this(rpcId, null, loopback, runOnServer) { }
         
         public override byte[] ToBytes() {
             byte[] rpcIdBytes = Encoding.Default.GetBytes(RpcId);
             List<byte> data = new List<byte> {
                 Id,
-                ByteUtils.BoolToByte(Loopback)
+                ByteUtils.BoolToByte(Loopback),
+                ByteUtils.BoolToByte(RunOnServer)
             };
             data.AddRange(rpcIdBytes);
 

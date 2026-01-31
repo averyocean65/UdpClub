@@ -77,23 +77,23 @@ namespace UdpClub.RPCs
             InvokeRpcFromId(UdpBase.ProgramAssembly, id, parameter);
         }
 
-        public static void BroadcastRpc(UdpBase client, IPEndPoint ep, string rpcName, object parameter, bool loopback = false) {
-            RpcPackage package = new RpcPackage(rpcName, parameter, loopback);
+        public static void BroadcastRpc(UdpBase client, IPEndPoint ep, string rpcName, object parameter, bool loopback = false, bool runOnServer = true) {
+            RpcPackage package = new RpcPackage(rpcName, parameter, loopback, runOnServer);
             PackageHandler.SendPackage(client, ep, package);
         }
         
-        public static void BroadcastRpc(UdpBase client, string rpcName, object parameter, bool loopback = false) {
-            RpcPackage package = new RpcPackage(rpcName, parameter, loopback);
+        public static void BroadcastRpc(UdpBase client, string rpcName, object parameter, bool loopback = false, bool runOnServer = true) {
+            RpcPackage package = new RpcPackage(rpcName, parameter, loopback, runOnServer);
             PackageHandler.SendPackage(client, null, package);
         }
         
-        public static void BroadcastRpcToClients(UdpBase client, IEnumerable<IPEndPoint> receivers, string rpcName, object parameter) {
-            RpcPackage package = new RpcPackage(rpcName, parameter);
+        public static void BroadcastRpcToClients(UdpBase client, IEnumerable<IPEndPoint> receivers, string rpcName, object parameter, bool runOnServer = true) {
+            RpcPackage package = new RpcPackage(rpcName, parameter, runOnServer: runOnServer);
             PackageHandler.SendPackageToAll(client, receivers, package);
         }
         
-        public static void BroadcastRpcToClients(UdpBase client, IEnumerable<IPEndPoint> receivers, IPEndPoint exception, string rpcName, object parameter) {
-            RpcPackage package = new RpcPackage(rpcName, parameter);
+        public static void BroadcastRpcToClients(UdpBase client, IEnumerable<IPEndPoint> receivers, IPEndPoint exception, string rpcName, object parameter, bool runOnServer = true) {
+            RpcPackage package = new RpcPackage(rpcName, parameter, runOnServer: runOnServer);
             PackageHandler.SendPackageToAllExcept(client, receivers, exception, package);
         }
     }

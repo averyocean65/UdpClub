@@ -69,6 +69,7 @@
         <Compile Include="LogicHandler.cs" />
         <Compile Include="Packets\AuthPacket.cs" />
         <Compile Include="Packets\AuthReturnPacket.cs" />
+        <Compile Include="Packets\MessagePacket.cs" />
         <Compile Include="Packets\PacketConstants.cs" />
         <Compile Include="Packets\PackageRegister.cs" />
         <Compile Include="Program.cs"/>

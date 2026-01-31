@@ -33,16 +33,26 @@ namespace ChatApp.Client {
 
         [Rpc(nameof(UserJoin))]
         public static void UserJoin(string username) {
+            if (OnUserJoin == null) {
+                return;
+            }
             OnUserJoin.Invoke(username);
         }
         
         [Rpc(nameof(UserLeave))]
         public static void UserLeave(string username) {
+            if (OnUserLeave == null) {
+                return;
+            }
             OnUserLeave.Invoke(username);
         }
 
         [Rpc(nameof(SyncClient))]
         public static void SyncClient(string[] prevUsers) {
+            if (OnSyncClient == null) {
+                return;
+            }
+            
             OnSyncClient.Invoke(prevUsers);
         }
     }

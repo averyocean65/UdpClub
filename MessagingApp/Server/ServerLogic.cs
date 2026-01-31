@@ -13,8 +13,14 @@ namespace ChatApp.Server {
         public ServerLogic(UdpBase client) {
             Users = new Dictionary<string, IPEndPoint>();
             Client = client;
+
+            ClientLogic.OnUserLeave += HandleUserLeave;
         }
-        
+
+        private void HandleUserLeave(string obj) {
+            Users.Remove(obj);
+        }
+
         public void Init() {
             PackageHandler.OnPackageParsed += ServerCallbacks.OnPackageParsed;
             Client.Connect();

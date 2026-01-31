@@ -40,8 +40,7 @@ namespace ChatApp.GUI {
 		}
 
 		private void ClientCanInit(string username) {
-			string cleanedString = Regex.Replace(username,"\\W", "");
-			if (string.IsNullOrEmpty(cleanedString)) {
+			if (Regex.IsMatch(username, "\\W") || string.IsNullOrEmpty(username)) {
 				MessageBox.Show("Please input a valid username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(1);
 			}
