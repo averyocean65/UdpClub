@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using ChatApp.Client;
 using UdpClub;
 
-namespace ChatApp {
+namespace ChatAp.GUI {
 	public partial class OpeningWindow : Form {
 		private LogicHandler _handler;
 		private UdpBase _client;
@@ -32,6 +32,7 @@ namespace ChatApp {
 			_handler = new ClientLogic(_client);
 			
 			// TODO: Get username + spawn client window
+			
 		}
 
 		private void serverButton_Click(object sender, EventArgs e) {

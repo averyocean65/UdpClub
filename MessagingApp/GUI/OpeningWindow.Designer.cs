@@ -1,4 +1,4 @@
-﻿namespace ChatApp {
+﻿namespace ChatApp.GUI {
 	partial class OpeningWindow {
 		/// <summary>
 		/// Required designer variable.
