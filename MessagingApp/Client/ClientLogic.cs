@@ -16,8 +16,6 @@ namespace ChatApp.Client {
         public void Init() {
             PackageHandler.OnPackageParsed += ClientCallbacks.OnPackageParsed;
             Client.OnConnected += SendAuthPacket;
-            
-            Username = Program.PromptUser("Please input your username");
             Client.Connect();
         }
 
@@ -27,9 +25,8 @@ namespace ChatApp.Client {
         }
 
         public void RunLoop() {
-            string message = "";
             while (true) {
-                message = Program.PromptUser("");
+                
             }
         }
 

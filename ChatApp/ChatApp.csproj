@@ -8,8 +8,8 @@
         <ProjectGuid>{32C2DE9B-F07C-41D1-9545-4B419D280B96}</ProjectGuid>
         <OutputType>Exe</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>ChatApp</RootNamespace>
-        <AssemblyName>ChatApp</AssemblyName>
+        <RootNamespace>ChatAppCli</RootNamespace>
+        <AssemblyName>ChatAppCli</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -40,17 +40,8 @@
         <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Client\ClientCallbacks.cs" />
-        <Compile Include="Client\ClientLogic.cs" />
-        <Compile Include="LogicHandler.cs" />
-        <Compile Include="Packets\AuthPacket.cs" />
-        <Compile Include="Packets\AuthReturnPacket.cs" />
-        <Compile Include="Packets\PacketManager.cs" />
-        <Compile Include="Packets\PacketConstants.cs" />
         <Compile Include="Program.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Server\ServerCallbacks.cs" />
-        <Compile Include="Server\ServerLogic.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\UdpClub\UdpClub.csproj">

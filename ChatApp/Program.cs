@@ -13,7 +13,16 @@ namespace ChatApp {
         
         private static UdpBase _client;
 
+        private static void ClearCurrentConsoleLine() {
+            int currentLine = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLine);
+        }
+        
         public static string PromptUser(string prompt) {
+            int lastLine = Console.CursorTop;
+            
             if (prompt.Length > 0) {
                 Console.WriteLine(prompt);
             }
