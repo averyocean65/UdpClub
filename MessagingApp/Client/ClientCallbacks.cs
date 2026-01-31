@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 using ChatApp.Packets;
 using UdpClub.Packages;
 
@@ -11,7 +12,7 @@ namespace ChatApp.Client {
             if (package.IsPackageType(typeof(AuthReturnPacket))) {
                 AuthReturnPacket authReturn = (AuthReturnPacket)package;
                 if (!authReturn.Success) {
-                    Console.Error.WriteLine("Authentication rejected by server.");
+                    MessageBox.Show("Server didn't permit authorization.", "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Environment.Exit(0);
                 }
                 
