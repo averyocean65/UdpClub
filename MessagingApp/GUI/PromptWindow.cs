@@ -7,18 +7,25 @@ namespace ChatApp.GUI {
 	public partial class PromptWindow : Form {
 		public Action<string> OnSubmitPressed;
 		
+		public string Title { get; private set; }
+		public string Message { get; private set; }
+		
 		private void DestroySelf(string obj) {
 			Close();
 		}
 
-		public PromptWindow() {
-			InitializeComponent();
-			OnSubmitPressed += DestroySelf;
+		private void OnShown(object sender, EventArgs e) {
+			Text = Title;
+			messageLabel.Text = Message;
 		}
 
-		public PromptWindow(string title, string message) : base() {
-			Text = title;
-			messageLabel.Text = message;
+		public PromptWindow(string title, string message) {
+			InitializeComponent();
+			OnSubmitPressed += DestroySelf;
+			Shown += OnShown;
+			
+			Title = title;
+			Message = message;
 		}
 
 		private void submitButton_Click(object sender, EventArgs e) {

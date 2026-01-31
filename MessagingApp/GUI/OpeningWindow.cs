@@ -34,7 +34,7 @@ namespace ChatApp.GUI {
 			
 			_client = new UdpClientApp(hostnameField.Text, port);
 			
-			PromptWindow usernamePrompt = new PromptWindow();
+			PromptWindow usernamePrompt = new PromptWindow("Input Username", "Please input your username...");
 			usernamePrompt.OnSubmitPressed += ClientCanInit;
 			usernamePrompt.Show();
 		}
