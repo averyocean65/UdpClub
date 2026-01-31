@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UdpClub.Packages;
 using UdpClub.RPCs;
-
+using UdpClub.Utils;
 using static UdpClub.Utils.DebugUtils;
 
 namespace UdpClub {
@@ -174,14 +174,21 @@ namespace UdpClub {
 		}
 
 		protected virtual void HandlePackage(ref IPEndPoint endPoint) {
-			byte[] received = InnerClient.Receive(ref endPoint);
-			
-			DebugPrintln($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
-			if (!RegisteredIPs.Contains(endPoint)) {
-				RegisteredIPs.Add(endPoint);
+			try {
+				byte[] received = InnerClient.Receive(ref endPoint);
+
+				DebugPrintln($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
+				if (!RegisteredIPs.Contains(endPoint)) {
+					RegisteredIPs.Add(endPoint);
+				}
+
+				PackageHandler.OnMessageReceived.Invoke(received, endPoint);
 			}
-			
-			PackageHandler.OnMessageReceived.Invoke(received, endPoint);
+			catch (Exception ex) {
+				PauseConsoleWriting = true;
+				Console.Error.WriteLine(ex);
+				PauseConsoleWriting = false;
+			}
 		}
 
 		public virtual void Send(byte[] data, IPEndPoint ep) {
