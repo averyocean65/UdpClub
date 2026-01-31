@@ -16,7 +16,6 @@ namespace ChatApp.Packets {
         }
 
         public AuthReturnPacket(bool success) {
-            Id = GetRequiredId();
             Success = success;
         }
         

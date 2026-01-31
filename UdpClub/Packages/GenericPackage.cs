@@ -4,7 +4,9 @@ using System.Net;
 namespace UdpClub.Packages {
 	public abstract class GenericPackage<T> : BasePackage
 	where T : BasePackage {
-		protected GenericPackage() { }
+		protected GenericPackage() {
+			Id = GetRequiredId();
+		}
 		
 		protected GenericPackage(byte[] data, IPEndPoint ep) : base(data, ep) {
 			if (!IsPackageType()) {
