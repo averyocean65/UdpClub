@@ -92,7 +92,7 @@ namespace UdpClub {
 		}
 
 		private void HandleRpcPackage(BasePackage obj) {
-			DebugPrintln($"HandleRpcPackage: {obj.Id}");
+			DebugPrintln($"Checking if package is RPC Package.. ID: {obj.Id}");
 			
 			if (obj.Id == PackageMap.GetPackageId(typeof(RpcPackage))) {
 				RpcPackage rpc = obj as RpcPackage;
