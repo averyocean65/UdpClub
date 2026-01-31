@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using ChatApp.Client;
 using UdpClub;
 
-namespace ChatAp.GUI {
+namespace ChatApp.GUI {
 	public partial class OpeningWindow : Form {
 		private LogicHandler _handler;
 		private UdpBase _client;
