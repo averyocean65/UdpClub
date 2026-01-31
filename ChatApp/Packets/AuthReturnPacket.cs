@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using UdpClub.Packages;
 using UdpClub.Utils;
 
 namespace ChatApp.Packets {
-    public class AuthReturnPacket : BasePackage {
+    public class AuthReturnPacket : GenericPackage<AuthReturnPacket> {
         public bool Success;
-
+        
         public AuthReturnPacket(byte[] data, IPEndPoint ep) : base(data, ep) {
             if (!IsPackageType(typeof(AuthReturnPacket))) {
                 throw new ArgumentException("Invalid ID");

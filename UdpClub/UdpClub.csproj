@@ -40,6 +40,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Packages\BasePackage.cs" />
+        <Compile Include="Packages\GenericPackage.cs" />
         <Compile Include="Packages\PackageHandler.cs" />
         <Compile Include="Packages\PackageMap.cs" />
         <Compile Include="Packages\RpcPackage.cs" />
