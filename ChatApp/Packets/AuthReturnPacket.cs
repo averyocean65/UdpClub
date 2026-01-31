@@ -21,7 +21,7 @@ namespace ChatApp.Packets {
         }
 
         public AuthReturnPacket(bool success) {
-            Id = PackageMap.GetPackageId(typeof(AuthPacket));
+            Id = PackageMap.GetPackageId(typeof(AuthReturnPacket));
             Success = success;
         }
         
