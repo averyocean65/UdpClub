@@ -113,6 +113,7 @@ namespace ChatApp.GUI {
 			this.Controls.Add(this.sendButton);
 			this.Controls.Add(this.memberList);
 			this.Controls.Add(this.messageList);
+			this.KeyPreview = true;
 			this.Name = "ClientWindow";
 			this.Text = "ClientWindow";
 			this.ResumeLayout(false);

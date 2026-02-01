@@ -80,6 +80,10 @@ namespace UdpClub.Packages {
 		/// <param name="endPoint">The IP to send to (disregard if you're a client communicating to a server)</param>
 		/// <param name="package">The data package to send</param>
 		public static void SendPackage(UdpBase client, IPEndPoint endPoint, BasePackage package) {
+			if (!client.IsConnected) {
+				return;
+			}
+			
 			OnPackageSend.Invoke(package);
 			byte[] data = package.ToBytes().Compress();
 			client.Send(data, endPoint);

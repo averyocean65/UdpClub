@@ -12,17 +12,40 @@ namespace ChatApp.GUI {
 		
 		public ClientWindow() {
 			InitializeComponent();
-
+			
 			ClientLogic.OnUserJoin += OnUserJoin;
 			ClientLogic.OnUserLeave += OnUserLeave;
 			ClientLogic.OnSyncClient += OnSyncClient;
 
+			ClientLogic.Client.OnDisconnected += OnDisconnected;
+			
 			ClientCallbacks.ReceivedMessage += OnReceiveMessage;
 
 			Closed += OnClosed;
+			Load += OnLoaded;
+		}
+
+		private void OnLoaded(object sender, EventArgs e) {
+			if (!ClientLogic.Client.IsConnected) {
+				OnDisconnected();
+			}
+		}
+
+		private void OnDisconnected() {
+			MessageBox.Show("Unable to communicate with server.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			Close();
+		}
+
+		protected override void OnKeyDown(KeyEventArgs e) {
+			base.OnKeyDown(e);
+
+			if (e.KeyCode == Keys.Return) {
+				sendButton_Click(null, null);
+			}
 		}
 
 		private void OnClosed(object sender, EventArgs e) {
+			ClientLogic.Client.OnDisconnected -= OnDisconnected;
 			LeaveChatroom();
 		}
 		
@@ -66,7 +89,7 @@ namespace ChatApp.GUI {
 		private void OnReceiveMessage(string user, string message) {
 			messageList.Items.Add($"[{user}]: {message}");
 		}
-
+		
 		private void sendButton_Click(object sender, EventArgs e) {
 			string trimmed = messageField.Text.Trim();
 			if (trimmed.Length < 1) {
@@ -78,6 +101,9 @@ namespace ChatApp.GUI {
 			
 			// emulate receiving message
 			OnReceiveMessage(messagePacket.Username, messagePacket.Message);
+			
+			// clear input field
+			messageField.Text = string.Empty;
 		}
 
 		private void leaveButton_Click(object sender, EventArgs e) {

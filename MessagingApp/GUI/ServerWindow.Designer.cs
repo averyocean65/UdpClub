@@ -26,14 +26,7 @@ namespace ChatApp.GUI {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			this.timer1 = new System.Timers.Timer();
-			((System.ComponentModel.ISupportInitialize)(this.timer1)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// timer1
-			// 
-			this.timer1.Enabled = true;
-			this.timer1.SynchronizingObject = this;
 			// 
 			// ServerWindow
 			// 
@@ -42,11 +35,8 @@ namespace ChatApp.GUI {
 			this.ClientSize = new System.Drawing.Size(800, 450);
 			this.Name = "ServerWindow";
 			this.Text = "ServerWindow";
-			((System.ComponentModel.ISupportInitialize)(this.timer1)).EndInit();
 			this.ResumeLayout(false);
 		}
-
-		private System.Timers.Timer timer1;
 
 		#endregion
 	}

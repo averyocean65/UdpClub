@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -7,13 +8,26 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UdpClub.Packages;
 using UdpClub.RPCs;
-using UdpClub.Utils;
+
 using static UdpClub.Utils.DebugUtils;
 
 namespace UdpClub {
 	public abstract class UdpBase {
 		public readonly List<IPEndPoint> RegisteredIPs = new List<IPEndPoint>();
 		
+		public bool IsConnected {
+			get {
+				if (InnerClient?.Client == null) {
+					DebugPrintln("InnerClient is null!");
+					return false;
+				}
+
+				bool connected = InnerClient.Client.Connected || IsServer;
+				DebugPrintln($"Connected: {connected}");
+				return connected;
+			}
+		}
+
 		/// <summary>
 		/// The assembly of the calling program, required for RPCs.
 		/// </summary>
@@ -185,6 +199,18 @@ namespace UdpClub {
 				PackageHandler.OnMessageReceived.Invoke(received, endPoint);
 			}
 			catch (Exception ex) {
+				if (ex is SocketException) {
+					if (!IsServer) {
+						// not calling Disconnect() because it requires InnerClient.Client.Connected to be true
+					
+						InnerClient.Close();
+						if (OnDisconnected != null) {
+							OnDisconnected.Invoke();
+						}
+						return;
+					}
+				}
+				
 				PauseConsoleWriting = true;
 				Console.Error.WriteLine(ex);
 				PauseConsoleWriting = false;
