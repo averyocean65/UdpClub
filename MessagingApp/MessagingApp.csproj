@@ -66,6 +66,12 @@
         <Compile Include="GUI\PromptWindow.Designer.cs">
           <DependentUpon>PromptWindow.cs</DependentUpon>
         </Compile>
+        <Compile Include="GUI\ServerWindow.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="GUI\ServerWindow.Designer.cs">
+          <DependentUpon>ServerWindow.cs</DependentUpon>
+        </Compile>
         <Compile Include="LogicHandler.cs" />
         <Compile Include="Packets\AuthPacket.cs" />
         <Compile Include="Packets\AuthReturnPacket.cs" />
@@ -84,6 +90,9 @@
         </EmbeddedResource>
         <EmbeddedResource Include="GUI\PromptWindow.resx">
           <DependentUpon>PromptWindow.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="GUI\ServerWindow.resx">
+          <DependentUpon>ServerWindow.cs</DependentUpon>
         </EmbeddedResource>
         <EmbeddedResource Include="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>

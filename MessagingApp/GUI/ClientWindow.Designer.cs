@@ -46,7 +46,7 @@ namespace ChatApp.GUI {
 			// 
 			// memberList
 			// 
-			this.memberList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+			this.memberList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Right)));
 			this.memberList.FormattingEnabled = true;
 			this.memberList.Location = new System.Drawing.Point(432, 25);
 			this.memberList.Name = "memberList";
@@ -86,7 +86,7 @@ namespace ChatApp.GUI {
 			// 
 			// label2
 			// 
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label2.Location = new System.Drawing.Point(432, 9);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(97, 13);
