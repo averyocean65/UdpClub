@@ -13,8 +13,8 @@ namespace ChatApp.GUI {
 		public ClientWindow() {
 			InitializeComponent();
 			
-			ClientLogic.OnUserJoin += OnUserJoin;
-			ClientLogic.OnUserLeave += OnUserLeave;
+			RpcCallbacks.OnUserJoin += OnUserJoin;
+			RpcCallbacks.OnUserLeave += OnUserLeave;
 			ClientLogic.OnSyncClient += OnSyncClient;
 
 			ClientLogic.Client.OnDisconnected += OnDisconnected;
@@ -53,7 +53,7 @@ namespace ChatApp.GUI {
 			if (_leftAlready) {
 				return;
 			}
-			RpcManager.BroadcastRpc(ClientLogic.Client, nameof(ClientLogic.UserLeave), ClientLogic.Username);
+			RpcManager.BroadcastRpc(ClientLogic.Client, nameof(RpcCallbacks.UserLeave), ClientLogic.Username);
 			_leftAlready = true;
 		}
 

@@ -14,7 +14,7 @@ namespace ChatApp.Server {
             Users = new Dictionary<string, IPEndPoint>();
             Client = client;
 
-            ClientLogic.OnUserLeave += HandleUserLeave;
+            RpcCallbacks.OnUserLeave += HandleUserLeave;
         }
 
         private void HandleUserLeave(string obj) {

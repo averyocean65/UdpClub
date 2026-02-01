@@ -22,7 +22,7 @@ namespace ChatApp.Server {
                     ServerLogic.Users.Add(auth.Username, auth.Sender);
 
                     RpcManager.BroadcastRpcToClients(ServerLogic.Client, ServerLogic.Users.Values,
-                        nameof(ClientLogic.UserJoin), auth.Username);
+                        nameof(RpcCallbacks.UserJoin), auth.Username);
 
                     if (ServerLogic.Users.Count > 1) {
                         RpcManager.BroadcastRpc(ServerLogic.Client, auth.Sender, nameof(ClientLogic.SyncClient),

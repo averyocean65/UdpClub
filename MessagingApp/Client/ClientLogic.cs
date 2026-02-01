@@ -8,9 +8,7 @@ namespace ChatApp.Client {
     public class ClientLogic : LogicHandler {
         public static string Username { get; private set; }
         public static UdpBase Client { get; private set; }
-
-        public static Action<string> OnUserJoin;
-        public static Action<string> OnUserLeave;
+        
         public static Action<string[]> OnSyncClient;
         
         public ClientLogic(UdpBase client, string username) {
@@ -31,21 +29,7 @@ namespace ChatApp.Client {
 
         public void RunLoop() { }
 
-        [Rpc(nameof(UserJoin))]
-        public static void UserJoin(string username) {
-            if (OnUserJoin == null) {
-                return;
-            }
-            OnUserJoin.Invoke(username);
-        }
         
-        [Rpc(nameof(UserLeave))]
-        public static void UserLeave(string username) {
-            if (OnUserLeave == null) {
-                return;
-            }
-            OnUserLeave.Invoke(username);
-        }
 
         [Rpc(nameof(SyncClient))]
         public static void SyncClient(string[] prevUsers) {

@@ -80,6 +80,7 @@
         <Compile Include="Packets\PackageRegister.cs" />
         <Compile Include="Program.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="RpcCallbacks.cs" />
         <Compile Include="Server\ServerCallbacks.cs" />
         <Compile Include="Server\ServerLogic.cs" />
         <EmbeddedResource Include="GUI\ClientWindow.resx">
