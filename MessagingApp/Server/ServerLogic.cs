@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using ChatApp.Client;
@@ -8,6 +9,9 @@ using UdpClub.Packages;
 namespace ChatApp.Server {
     public class ServerLogic : LogicHandler {
         public static Dictionary<string, IPEndPoint> Users;
+
+        public static Action<string, string> OnReceiveMessage;
+        
         public static UdpBase Client;
         
         public ServerLogic(UdpBase client) {

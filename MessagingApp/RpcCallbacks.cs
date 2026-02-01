@@ -1,6 +1,8 @@
 ﻿using System;
 using UdpClub.RPCs;
 
+using static UdpClub.Utils.DebugUtils;
+
 namespace ChatApp {
 	public static class RpcCallbacks {
 		public static Action<string> OnUserJoin;
@@ -8,9 +10,13 @@ namespace ChatApp {
 		
 		[Rpc(nameof(UserJoin))]
 		public static void UserJoin(string username) {
+			DebugPrintln("OnUserJoin RPC called!");
 			if (OnUserJoin == null) {
+				DebugPrintln("OnUserJoin is null");
 				return;
 			}
+			
+			DebugPrintln($"User {username} joined!");
 			OnUserJoin.Invoke(username);
 		}
         

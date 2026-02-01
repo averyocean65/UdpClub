@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Windows.Forms;
 using ChatApp.Client;
 using ChatApp.Packets;
 using UdpClub;
@@ -22,7 +23,7 @@ namespace ChatApp.Server {
                     ServerLogic.Users.Add(auth.Username, auth.Sender);
 
                     RpcManager.BroadcastRpcToClients(ServerLogic.Client, ServerLogic.Users.Values,
-                        nameof(RpcCallbacks.UserJoin), auth.Username);
+                        nameof(RpcCallbacks.UserJoin), auth.Username, runOnServer: true);
 
                     if (ServerLogic.Users.Count > 1) {
                         RpcManager.BroadcastRpc(ServerLogic.Client, auth.Sender, nameof(ClientLogic.SyncClient),
@@ -38,6 +39,12 @@ namespace ChatApp.Server {
                 // Redirect package
                 DebugPrintln("Redirecting message package...");
                 PackageHandler.SendPackageToAllExcept(ServerLogic.Client, ServerLogic.Users.Values, package.Sender, package);
+
+                if (ServerLogic.OnReceiveMessage != null) {
+                    DebugPrintln("Invoking ServerLogic.OnReceiveMessage");
+                    MessagePacket messagePacket = (MessagePacket)package;
+                    ServerLogic.OnReceiveMessage.Invoke(messagePacket.Username, messagePacket.Message);
+                }
             }
         }
     }

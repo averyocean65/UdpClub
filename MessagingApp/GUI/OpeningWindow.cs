@@ -75,10 +75,13 @@ namespace ChatApp.GUI {
 			_handler.Init();
 			_handler.RunLoop();
 
-			// TODO: show server window, this is a very temporary solution!
-			label1.Text = "NOTE: Running as server!";
-			clientButton.Enabled = false;
-			serverButton.Enabled = false;
+			// spawn server window
+			ServerWindow window = new ServerWindow();
+			window.Closed += CloseApp;
+			
+			window.Show();
+			
+			Hide();
 		}
 	}
 }
