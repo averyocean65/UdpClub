@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
+using System.IO.Pipes;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using static UdpClub.Utils.DebugUtils;
@@ -43,6 +45,34 @@ namespace UdpClub.Utils {
 					return default(T);
 				}
 			}
+		}
+
+		private static byte[] Deflation(byte[] data, CompressionMode mode, CompressionLevel level) {
+			MemoryStream input = new MemoryStream(data);
+			MemoryStream output = new MemoryStream();
+
+			if (mode == CompressionMode.Compress) {
+				using (DeflateStream deflateStream = new DeflateStream(output, level)) {
+					deflateStream.Write(data, 0, data.Length);
+				}
+			}
+			else {
+				using (DeflateStream deflateStream = new DeflateStream(input, mode)) {
+					deflateStream.CopyTo(output);
+				}	
+			}
+
+			return output.ToArray();
+		}
+
+		public static byte[] Compress(this byte[] data) {
+			byte[] compressed = Deflation(data, CompressionMode.Compress, CompressionLevel.Fastest);
+			DebugPrintln($"Uncompressed size: {data.Length}; Compressed size: {compressed.Length}");
+			return compressed;
+		}
+		
+		public static byte[] Decompress(this byte[] data) {
+			return Deflation(data, CompressionMode.Decompress, CompressionLevel.Fastest);
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-
+using UdpClub.Utils;
 using static UdpClub.Utils.DebugUtils;
 
 namespace UdpClub.Packages {
@@ -17,11 +17,14 @@ namespace UdpClub.Packages {
 		}
 
 		private static void ParsePackage(byte[] data, IPEndPoint ep) {
-			if (data.Length < 1) {
-				throw new ArgumentException($"{nameof(data)} is of size 0");
+			byte[] decompressed = data.Decompress();
+			
+			if (decompressed.Length < 1) {
+				throw new ArgumentException($"{nameof(decompressed)} is of size 0");
 			}
+			DebugPrintln($"Decompressed bytes: {BitConverter.ToString(decompressed)}");
 
-			byte id = data[0];
+			byte id = decompressed[0];
 			Type packageType = PackageMap.GetPackageType(id);
 
 			if (packageType == null) {
@@ -39,7 +42,7 @@ namespace UdpClub.Packages {
 			}
 
 			DebugPrintln("Calling constructor!");
-			BasePackage package = (BasePackage)constructor.Invoke(new object[] { data, ep });
+			BasePackage package = (BasePackage)constructor.Invoke(new object[] { decompressed, ep });
 			DebugPrintln($"Parsed Package: {package.Id}");
 			
 			OnPackageParsed.Invoke(package);
@@ -78,7 +81,7 @@ namespace UdpClub.Packages {
 		/// <param name="package">The data package to send</param>
 		public static void SendPackage(UdpBase client, IPEndPoint endPoint, BasePackage package) {
 			OnPackageSend.Invoke(package);
-			byte[] data = package.ToBytes();
+			byte[] data = package.ToBytes().Compress();
 			client.Send(data, endPoint);
 		}
 		
