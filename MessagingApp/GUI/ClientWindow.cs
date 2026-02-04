@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using ChatApp.Client;
 using ChatApp.Packets;
@@ -10,6 +11,8 @@ namespace ChatApp.GUI {
 	public partial class ClientWindow : Form {
 		private bool _leftAlready = false;
 		private bool _joinedAlready = false;
+
+		private readonly object _memberListLock = new object();
 		
 		public ClientWindow() {
 			InitializeComponent();
@@ -65,13 +68,25 @@ namespace ChatApp.GUI {
 			_leftAlready = true;
 		}
 
+		private void AddUserLocally(string user) {
+			lock(_memberListLock) {
+				if (memberList.Items.Contains(user)) {
+					return;
+				}
+				
+				// somehow a timeout causes this stuff to not spawn duplicates, so....
+				Thread.Sleep(50);
+				memberList.Items.Add(user);
+			}
+		}
+
 		private void OnUserJoin(string user) {
 			if (string.Equals(user, ClientLogic.Username, StringComparison.Ordinal) && _joinedAlready) {
 				return;
 			}
 
 			_joinedAlready = true;
-			memberList.Items.Add(user);
+			AddUserLocally(user);
 			
 			// filter member list just to be sure
 			
@@ -94,11 +109,12 @@ namespace ChatApp.GUI {
 			
 			foreach(string username in obj)
 			{
-				if (string.Equals(username, ClientLogic.Username, StringComparison.Ordinal)) {
+				if (string.Equals(username, ClientLogic.Username, StringComparison.Ordinal) ||
+				    memberList.Items.Contains(obj)) {
 					continue;
 				}
-				
-				memberList.Items.Add(username);
+
+				AddUserLocally(username);
 			}
 		}
 		
