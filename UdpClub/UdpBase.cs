@@ -220,8 +220,8 @@ namespace UdpClub {
 		protected virtual void HandlePackage(ref IPEndPoint endPoint) {
 			try {
 				byte[] received = InnerClient.Receive(ref endPoint);
-
 				DebugPrintln($"Bytes from {endPoint.Address}: {BitConverter.ToString(received)}");
+
 				if (!RegisteredIPs.Contains(endPoint)) {
 					RegisteredIPs.Add(endPoint);
 				}
@@ -230,20 +230,21 @@ namespace UdpClub {
 				if (!continueWithIp) {
 					return;
 				}
-				
+
 				PackageHandler.OnMessageReceived.Invoke(received, endPoint);
+
 			}
 			catch (Exception ex) {
 				if (ex is SocketException) {
 					if (!IsServer) {
 						// not calling Disconnect() because it requires InnerClient.Client.Connected to be true
-					
+
 						InnerClient.Close();
 						OnDisconnected?.Invoke();
 						return;
 					}
 				}
-				
+
 				PauseConsoleWriting = true;
 				Console.Error.WriteLine(ex);
 				PauseConsoleWriting = false;

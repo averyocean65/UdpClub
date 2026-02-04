@@ -22,21 +22,21 @@ namespace UdpClub {
 			if (!RegisteredIPs.Contains(ip)) {
 				throw new ArgumentException($"IP is not present in {nameof(RegisteredIPs)}");
 			}
+			
+			PackageHandler.SendPackage(this, ip, new ForceDisconnectPackage());
 
 			OnKickInitiated?.Invoke(ip);
-			UsersToKick.Add(ip);
 		}
 
 		protected override bool RunIpChecks(IPEndPoint ep, byte[] data) {
-			if (UsersToKick.Contains(ep)) {
-				DebugPrintln($"Kicking: {ep.Address}");
-				
-				PackageHandler.SendPackage(this, ep, new ForceDisconnectPackage());
-				UsersToKick.Remove(ep);
-
-				OnKickInitiated?.Invoke(ep);
-				return false;
-			}
+			// if (UsersToKick.Contains(ep)) {
+			// 	DebugPrintln($"{ep.Address}");
+			// 	
+			// 	UsersToKick.Remove(ep);
+			//
+			// 	OnKickInitiated?.Invoke(ep);
+			// 	return false;
+			// }
 
 			return true;
 		}

@@ -28,7 +28,6 @@ namespace ChatApp.GUI {
 
 		private void OnForceDisconnect() {
 			Close();
-			Environment.Exit(0);
 		}
 
 		private void OnLoaded(object sender, EventArgs e) {
