@@ -9,6 +9,7 @@ using UdpClub.RPCs;
 namespace ChatApp.GUI {
 	public partial class ClientWindow : Form {
 		private bool _leftAlready = false;
+		private bool _joinedAlready = false;
 		
 		public ClientWindow() {
 			InitializeComponent();
@@ -62,9 +63,14 @@ namespace ChatApp.GUI {
 			_leftAlready = true;
 		}
 
-		private void OnUserJoin(string obj) {
-			memberList.Items.Add(obj);
-			messageList.Items.Add($"{obj} has joined the chat.");
+		private void OnUserJoin(string user) {
+			if (string.Equals(user, ClientLogic.Username, StringComparison.Ordinal) && _joinedAlready) {
+				return;
+			}
+
+			_joinedAlready = true;
+			memberList.Items.Add(user);
+			messageList.Items.Add($"{user} has joined the chat.");
 		}
 		
 		private void OnUserLeave(string obj) {
@@ -83,7 +89,7 @@ namespace ChatApp.GUI {
 			
 			foreach(string username in obj)
 			{
-				if (username == ClientLogic.Username) {
+				if (string.Equals(username, ClientLogic.Username, StringComparison.Ordinal)) {
 					continue;
 				}
 				
