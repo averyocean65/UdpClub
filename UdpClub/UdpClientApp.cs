@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Reflection;
+using UdpClub.Packages;
 
 namespace UdpClub {
 	public class UdpClientApp : UdpBase {

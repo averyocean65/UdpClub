@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using ChatApp.Client;
+using ChatApp.GUI;
 using ChatApp.Packets;
 using UdpClub;
 using UdpClub.Packages;
@@ -21,10 +22,15 @@ namespace ChatApp.Server {
                 if (canLogIn) {
                     Console.WriteLine($"New user: {auth.Username}");
                     ServerLogic.Users.Add(auth.Username, auth.Sender);
+                    
+                    // execute RPC on server (this is different from a user leaving, because this is called on the server)
+                    RpcCallbacks.OnUserJoin.Invoke(auth.Username);
 
+                    // notify others of new user!
                     RpcManager.BroadcastRpcToClients(ServerLogic.Client, ServerLogic.Users.Values,
                         nameof(RpcCallbacks.UserJoin), auth.Username, runOnServer: true);
-
+                    
+                    // make sure the new client knows the other members
                     if (ServerLogic.Users.Count > 1) {
                         RpcManager.BroadcastRpc(ServerLogic.Client, auth.Sender, nameof(ClientLogic.SyncClient),
                             ServerLogic.Users.Keys.ToArray(), runOnServer: false);

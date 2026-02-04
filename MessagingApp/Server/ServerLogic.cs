@@ -12,9 +12,9 @@ namespace ChatApp.Server {
 
         public static Action<string, string> OnReceiveMessage;
         
-        public static UdpBase Client;
+        public static UdpServerApp Client;
         
-        public ServerLogic(UdpBase client) {
+        public ServerLogic(UdpServerApp client) {
             Users = new Dictionary<string, IPEndPoint>();
             Client = client;
 

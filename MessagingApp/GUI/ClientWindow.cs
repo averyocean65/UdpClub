@@ -18,11 +18,17 @@ namespace ChatApp.GUI {
 			ClientLogic.OnSyncClient += OnSyncClient;
 
 			ClientLogic.Client.OnDisconnected += OnDisconnected;
+			ClientLogic.Client.OnForceDisconnect += OnForceDisconnect;
 			
 			ClientCallbacks.ReceivedMessage += OnReceiveMessage;
 
 			Closed += OnClosed;
 			Load += OnLoaded;
+		}
+
+		private void OnForceDisconnect() {
+			Close();
+			Environment.Exit(0);
 		}
 
 		private void OnLoaded(object sender, EventArgs e) {

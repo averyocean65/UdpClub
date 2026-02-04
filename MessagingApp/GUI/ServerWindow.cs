@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
-using System.Timers;
 using System.Windows.Forms;
 using ChatApp.Server;
 using UdpClub.RPCs;
+
+using static UdpClub.Utils.DebugUtils;
 
 namespace ChatApp.GUI {
 	public partial class ServerWindow : Form {
@@ -12,8 +14,20 @@ namespace ChatApp.GUI {
 
 			RpcCallbacks.OnUserJoin += OnUserJoin;
 			RpcCallbacks.OnUserLeave += OnUserLeave;
-
+			
+			ServerLogic.Client.OnKickInitiated += OnClientGotKicked;
 			ServerLogic.OnReceiveMessage += OnReceiveMessage;
+		}
+
+		private void OnClientGotKicked(IPEndPoint ip) {
+			DebugPrintln($"Kicking {ip.Address}");
+			if (!ServerLogic.Users.ContainsValue(ip)) {
+				return;
+			}
+
+			string username = ServerLogic.Users.FirstOrDefault(x => Equals(x.Value, ip)).Key;
+			RpcManager.BroadcastRpcToClients(ServerLogic.Client, ServerLogic.Users.Values,
+				nameof(RpcCallbacks.UserLeave), username);
 		}
 
 		private void OnReceiveMessage(string user, string message) {
@@ -21,10 +35,12 @@ namespace ChatApp.GUI {
 		}
 
 		private void OnUserJoin(string user) {
+			messageList.Items.Add($"-- {user} JOINED --");
 			userList.Items.Add(user);
 		}
 		
 		private void OnUserLeave(string user) {
+			messageList.Items.Add($"-- {user} LEFT --");
 			userList.Items.Remove(user);
 		}
 
@@ -43,8 +59,8 @@ namespace ChatApp.GUI {
 					return;
 				}
 
-				RpcManager.BroadcastRpcToClients(ServerLogic.Client, ServerLogic.Users.Values,
-					nameof(RpcCallbacks.OnUserLeave), selectedUser);
+				IPEndPoint ip = ServerLogic.Users[selectedUser];
+				ServerLogic.Client?.Kick(ip);
 			}
 		}
 	}

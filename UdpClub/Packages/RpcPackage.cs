@@ -7,7 +7,7 @@ using UdpClub.Utils;
 using static UdpClub.Utils.DebugUtils;
 
 namespace UdpClub.Packages {
-    public class RpcPackage : BasePackage {
+    public class RpcPackage : GenericPackage<RpcPackage> {
         private const byte Separator = 0xFF;
         
         public readonly string RpcId;
@@ -16,10 +16,6 @@ namespace UdpClub.Packages {
         public readonly bool RunOnServer;
         
         public RpcPackage(byte[] data, IPEndPoint ep) : base(data, ep) {
-            if (!IsPackageType(typeof(RpcPackage))) {
-                throw new ArgumentException("ID from data bytes is invalid!");
-            }
-            
             DebugPrintln("RPC package is valid!");
 
             if (UnhandledData.Length < 3) {
@@ -50,7 +46,6 @@ namespace UdpClub.Packages {
         }
 
         public RpcPackage(string rpcId, object parameter, bool loopback = false, bool runOnServer = true) {
-            Id = PackageMap.GetPackageId(typeof(RpcPackage));
             this.RpcId = rpcId;
             this.Loopback = loopback;
             this.Parameter = parameter;

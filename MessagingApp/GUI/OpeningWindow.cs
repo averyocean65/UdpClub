@@ -70,7 +70,7 @@ namespace ChatApp.GUI {
 			}
 			
 			_client = new UdpServerApp(hostnameField.Text, port);
-			_handler = new ServerLogic(_client);
+			_handler = new ServerLogic((UdpServerApp)_client);
 			
 			_handler.Init();
 			_handler.RunLoop();
