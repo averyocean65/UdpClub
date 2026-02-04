@@ -69,6 +69,7 @@ namespace ChatApp.GUI {
 			this.Controls.Add(this.submitButton);
 			this.Controls.Add(this.inputField);
 			this.Controls.Add(this.messageLabel);
+			this.KeyPreview = true;
 			this.MaximumSize = new System.Drawing.Size(500, 146);
 			this.Name = "PromptWindow";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

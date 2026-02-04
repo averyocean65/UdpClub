@@ -29,5 +29,13 @@ namespace ChatApp.GUI {
 		private void submitButton_Click(object sender, EventArgs e) {
 			OnSubmitPressed.Invoke(inputField.Text);
 		}
+
+		protected override void OnKeyDown(KeyEventArgs e) {
+			base.OnKeyDown(e);
+
+			if (e.KeyCode == Keys.Return) {
+				submitButton_Click(null, null);
+			}
+		}
 	}
 }
