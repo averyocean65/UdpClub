@@ -35,6 +35,8 @@ namespace ChatApp.GUI {
 			if (!ClientLogic.Client.IsConnected) {
 				OnDisconnected();
 			}
+
+			Text = $"Chat Client - {ClientLogic.Username}";
 		}
 
 		private void OnDisconnected() {

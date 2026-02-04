@@ -115,7 +115,7 @@ namespace ChatApp.GUI {
 			this.Controls.Add(this.messageList);
 			this.KeyPreview = true;
 			this.Name = "ClientWindow";
-			this.Text = "ClientWindow";
+			this.Text = "UdpClub Demo (Client)";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}

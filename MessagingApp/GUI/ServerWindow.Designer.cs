@@ -90,7 +90,7 @@ namespace ChatApp.GUI {
 			this.Controls.Add(this.messageList);
 			this.Controls.Add(this.userList);
 			this.Name = "ServerWindow";
-			this.Text = "Server Window";
+			this.Text = "Chat Server";
 			this.ResumeLayout(false);
 		}
 
