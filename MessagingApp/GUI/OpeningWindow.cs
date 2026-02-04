@@ -10,7 +10,6 @@ using UdpClub;
 namespace ChatApp.GUI {
 	public partial class OpeningWindow : Form {
 		private LogicHandler _handler;
-		private UdpBase _client;
 		
 		public OpeningWindow() {
 			InitializeComponent();
@@ -27,13 +26,6 @@ namespace ChatApp.GUI {
 		}
 
 		private void clientButton_Click(object sender, EventArgs e) {
-			int port = GetPort();
-			if (port < 0) {
-				return;
-			}
-			
-			_client = new UdpClientApp(hostnameField.Text, port);
-			
 			PromptWindow usernamePrompt = new PromptWindow("Input Username", "Please input your username...");
 			usernamePrompt.OnSubmitPressed += ClientCanInit;
 			usernamePrompt.Show();
@@ -45,7 +37,12 @@ namespace ChatApp.GUI {
 				Environment.Exit(1);
 			}
 			
-			_handler = new ClientLogic(_client, username);
+			int port = GetPort();
+			if (port < 0) {
+				return;
+			}
+			
+			_handler = new ClientLogic(new UdpClientApp(hostnameField.Text, port), username);
 			_handler.Init();
 			_handler.RunLoop();
 
@@ -69,8 +66,8 @@ namespace ChatApp.GUI {
 				return;
 			}
 			
-			_client = new UdpServerApp(hostnameField.Text, port);
-			_handler = new ServerLogic((UdpServerApp)_client);
+			UdpServerApp server = new UdpServerApp(hostnameField.Text, port);
+			_handler = new ServerLogic(server);
 			
 			_handler.Init();
 			_handler.RunLoop();

@@ -72,6 +72,9 @@ namespace ChatApp.GUI {
 
 			_joinedAlready = true;
 			memberList.Items.Add(user);
+			
+			// filter member list just to be sure
+			
 			messageList.Items.Add($"{user} has joined the chat.");
 		}
 		

@@ -13,5 +13,9 @@ namespace UdpClub.Utils {
 			int length = array.Length - start;
 			return Subarray(array, start, length);
 		}
+
+		public static T[] Uniques<T>(this T[] array) {
+			return array.Distinct().ToArray();
+		}
 	}
 }
