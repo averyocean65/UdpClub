@@ -33,11 +33,7 @@ namespace ChatApp.Client {
 
         [Rpc(nameof(SyncClient))]
         public static void SyncClient(string[] prevUsers) {
-            if (OnSyncClient == null) {
-                return;
-            }
-            
-            OnSyncClient.Invoke(prevUsers);
+            OnSyncClient?.Invoke(prevUsers);
         }
     }
 }

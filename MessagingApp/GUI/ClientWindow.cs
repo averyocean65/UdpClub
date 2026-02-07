@@ -11,8 +11,10 @@ namespace ChatApp.GUI {
 	public partial class ClientWindow : Form {
 		private bool _leftAlready = false;
 		private bool _joinedAlready = false;
+		private bool _disconnectedAlready = false;
 
-		private readonly object _memberListLock = new object();
+		private readonly object _memberJoinListLock = new object();
+		private readonly object _memberLeaveListLock = new object();
 		
 		public ClientWindow() {
 			InitializeComponent();
@@ -56,12 +58,17 @@ namespace ChatApp.GUI {
 		}
 
 		private void OnClosed(object sender, EventArgs e) {
+			if (_disconnectedAlready) {
+				return;
+			}
+
+			_disconnectedAlready = true;
 			ClientLogic.Client.OnDisconnected -= OnDisconnected;
 			LeaveChatroom();
 		}
 		
 		private void LeaveChatroom() {
-			if (_leftAlready) {
+			if (_leftAlready || _disconnectedAlready) {
 				return;
 			}
 			RpcManager.BroadcastRpc(ClientLogic.Client, nameof(RpcCallbacks.UserLeave), ClientLogic.Username);
@@ -69,7 +76,7 @@ namespace ChatApp.GUI {
 		}
 
 		private void AddUserLocally(string user) {
-			lock(_memberListLock) {
+			lock(_memberJoinListLock) {
 				if (memberList.Items.Contains(user)) {
 					return;
 				}
@@ -87,8 +94,6 @@ namespace ChatApp.GUI {
 
 			_joinedAlready = true;
 			AddUserLocally(user);
-			
-			// filter member list just to be sure
 			
 			messageList.Items.Add($"{user} has joined the chat.");
 		}
