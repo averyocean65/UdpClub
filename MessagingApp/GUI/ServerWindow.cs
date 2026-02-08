@@ -61,6 +61,7 @@ namespace ChatApp.GUI {
 
 				IPEndPoint ip = ServerLogic.Users[selectedUser];
 				messageList.Items.Add($"- {selectedUser} GOT KICKED -");
+				userList.Items.Remove(selectedUser);
 				ServerLogic.Client?.Kick(ip);
 			}
 		}
