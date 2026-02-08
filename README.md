@@ -5,6 +5,12 @@ A library for C# designed to help speed up the development of UDP networking app
 UdpClub is a C# library, which acts as a wrapper around the `UdpClient` class, with a few extra utilities.
 UdpClub automatically handles parsing byte data into packages for you, as well as RPC calls and a standardized way to create network packages for your project.
 
+## Requirements
+In order to use any project in `UdpClub`, you will need to have the [.NET Framework 4.8.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481) installed.
+
+## Usage Notice
+### ⚠️ UdpClub is a C# DLL. It is not compatible with languages such as C/C++, Rust, or others by default.
+
 ## Projects in this solution
 ### UdpClub
 The main library, hosting every feature that UdpClub offers.
