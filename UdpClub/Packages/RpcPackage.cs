@@ -31,11 +31,11 @@ namespace UdpClub.Packages {
             DebugPrintln($"Running subarray. Valid parameter? {idx < 1}");
             
             if (idx < 1) {
-                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(start));
+                RpcId = Encoding.UTF8.GetString(UnhandledData.Subarray(start));
                 Parameter = null;
             }
             else {
-                RpcId = Encoding.Default.GetString(UnhandledData.Subarray(start, idx - start));
+                RpcId = Encoding.UTF8.GetString(UnhandledData.Subarray(start, idx - start));
                 Parameter = ByteUtils.FromByteArray<object>(UnhandledData.Subarray(idx + 1));
             }
             
@@ -55,7 +55,7 @@ namespace UdpClub.Packages {
         public RpcPackage(string rpcId, bool loopback = false, bool runOnServer = true) : this(rpcId, null, loopback, runOnServer) { }
         
         public override byte[] ToBytes() {
-            byte[] rpcIdBytes = Encoding.Default.GetBytes(RpcId);
+            byte[] rpcIdBytes = Encoding.UTF8.GetBytes(RpcId);
             List<byte> data = new List<byte> {
                 Id,
                 ByteUtils.BoolToByte(Loopback),
