@@ -8,6 +8,13 @@ UdpClub automatically handles parsing byte data into packages for you, as well a
 ## Requirements
 In order to use any project in `UdpClub`, you will need to have the [.NET Framework 4.8.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481) installed.
 
+## Installation
+### Demo Project
+On the [releases page](github.com/averyocean65/UdpClub/releases) you will find a file called `ChatApp.zip`, which contains the demo project for UdpClub. Export the folder, launch at least two instances to create a server and client(s), and have fun!
+
+### UdpClub
+On the [releases page](github.com/averyocean65/UdpClub/releases) you will find the UdpClub DLL. Reference it in your .NET projects to utilize the functionality of UdpClub.
+
 ## Usage Notice
 ### ⚠️ UdpClub is a C# DLL. It is not compatible with languages such as C/C++, Rust, or others by default.
 
