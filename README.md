@@ -33,4 +33,3 @@ A test library for testing utilities in UdpClub.
 
 ### MessagingApp
 MessagingApp is a small rudimentary chat client developed with UdpClub at it's core. It's also the demo project for the [Flavortown Page](https://flavortown.hackclub.com/projects/4944).
-![MessagingApp](media/img.png)
